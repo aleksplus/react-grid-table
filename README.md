@@ -173,6 +173,7 @@ export default MyAwesomeTable;
 | getIsRowSelectable | function | a callback function that returns whether row selection for the current row should be selectable or disabled | `row => true` |
 | getIsRowEditable | function | a callback function that returns whether row editing for the current row should be allowed or not | `row => true` |
 | editRowId | any | the id of the row that should switch to inline editing mode, (more <u>[details](#Row-Editing)</u> about row editing) | null |
+| classNameContainer | string | a custom class selector for table container | "" |
 | page | number | current page number | 1 |
 | pageSize | number | the selected page size | 20 |
 | sort | object | sort config. accepts `colId` for the id of the column that should be sorted, and `isAsc` to define the sort direction. example: `{ colId: 'some-column-id', isAsc: true }`, to unsort simply pass `colId` as `null` | { } |

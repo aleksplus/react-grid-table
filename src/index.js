@@ -39,6 +39,9 @@ const GridTable = (props) => {
     }, {});
 
     const classNames = ("rgt-wrapper " + (props.className || "")).trim();
+    const classNamesContainer = (
+        "rgt-container " + (props.classNameContainer || "")
+    ).trim();
 
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
@@ -46,7 +49,7 @@ const GridTable = (props) => {
             <SortableList
                 forwardRef={tableRef}
                 getContainer={() => tableRef}
-                className="rgt-container"
+                className={classNamesContainer}
                 axis="x"
                 lockToContainerEdges
                 distance={10}
@@ -150,6 +153,7 @@ GridTable.propTypes = {
     getIsRowSelectable: PropTypes.func,
     getIsRowEditable: PropTypes.func,
     editRowId: PropTypes.any,
+    classNameContainer: PropTypes.string,
     // table config
     rowIdField: PropTypes.string,
     batchSize: PropTypes.number,
