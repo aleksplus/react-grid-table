@@ -29,6 +29,7 @@ const useColumns = (props, tableManager) => {
             if (column.id === "checkbox")
                 return {
                     className: "",
+                    headerClassName: "",
                     width: "max-content",
                     minResizeWidth: 0,
                     maxResizeWidth: null,
@@ -47,6 +48,7 @@ const useColumns = (props, tableManager) => {
             return {
                 label: column.field,
                 className: "",
+                headerClassName: "",
                 width: "200px",
                 minResizeWidth: null,
                 maxResizeWidth: null,
