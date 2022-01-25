@@ -23,6 +23,7 @@ const GridTable = (props) => {
             isVirtualScroll,
             rowIdField,
             components: { Header, Footer, Loader, NoResults, DragHandle },
+            additionalProps: { container: additionalProps = {} },
         },
         refs: { rgtRef, tableRef },
         columnsApi: { visibleColumns },
@@ -58,6 +59,7 @@ const GridTable = (props) => {
                 onSortStart={onColumnReorderStart}
                 onSortEnd={onColumnReorderEnd}
                 style={{
+                    ...additionalProps.style,
                     display: "grid",
                     overflow: "auto",
                     flex: 1,
