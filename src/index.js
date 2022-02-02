@@ -165,7 +165,12 @@ GridTable.propTypes = {
     getIsRowEditable: PropTypes.func,
     editRowId: PropTypes.any,
     classNameContainer: PropTypes.string,
-    children: PropTypes.oneOfType(PropTypes.array, PropTypes.func),
+    children: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.element,
+        PropTypes.node,
+        PropTypes.func,
+    ]),
     // table config
     rowIdField: PropTypes.string,
     batchSize: PropTypes.number,
