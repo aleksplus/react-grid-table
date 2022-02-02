@@ -95,6 +95,6 @@
         "dist"
     ],
     "dependencies": {
-        "react-virtual": "^2.3.0"
+        "react-virtual": "2.9.1"
     }
 }
