@@ -79,6 +79,7 @@ const GridTable = (props) => {
                         tableManager={tableManager}
                     />
                 ))}
+                {props.children}
                 {totalRows && visibleColumns.length > 1
                     ? isVirtualScroll
                         ? [
@@ -156,6 +157,7 @@ GridTable.propTypes = {
     getIsRowEditable: PropTypes.func,
     editRowId: PropTypes.any,
     classNameContainer: PropTypes.string,
+    children: PropTypes.oneOfType(PropTypes.array, PropTypes.any),
     // table config
     rowIdField: PropTypes.string,
     batchSize: PropTypes.number,
