@@ -44,6 +44,11 @@ const GridTable = (props) => {
         "rgt-container " + (props.classNameContainer || "")
     ).trim();
 
+    const children =
+        typeof props.children === "function"
+            ? props.children({ columns: visibleColumns })
+            : props.children;
+
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
             <Header tableManager={tableManager} />
@@ -67,7 +72,10 @@ const GridTable = (props) => {
                         .map((column) => column.width)
                         .join(" "),
                     gridTemplateRows: `repeat(${
-                        pageRows.length + 1 + (isVirtualScroll ? 1 : 0)
+                        pageRows.length +
+                        1 +
+                        (isVirtualScroll ? 1 : 0) +
+                        (children ? 1 : 0)
                     }, max-content)`,
                 }}
             >
@@ -79,7 +87,7 @@ const GridTable = (props) => {
                         tableManager={tableManager}
                     />
                 ))}
-                {props.children}
+                {children}
                 {totalRows && visibleColumns.length > 1
                     ? isVirtualScroll
                         ? [
@@ -157,7 +165,7 @@ GridTable.propTypes = {
     getIsRowEditable: PropTypes.func,
     editRowId: PropTypes.any,
     classNameContainer: PropTypes.string,
-    children: PropTypes.oneOfType(PropTypes.array, PropTypes.any),
+    children: PropTypes.oneOfType(PropTypes.array, PropTypes.func),
     // table config
     rowIdField: PropTypes.string,
     batchSize: PropTypes.number,
