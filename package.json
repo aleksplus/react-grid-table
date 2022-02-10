@@ -4,8 +4,8 @@
     "description": "A modular table, based on a CSS grid layout, optimized for customization.",
     "author": "Nadav Shaar",
     "license": "MIT",
-    "repository": "NadavShaar/react-grid-table",
-    "homepage": "https://nadavshaar.github.io/react-grid-table/",
+    "repository": "aleksplus/react-grid-table",
+    "homepage": "https://aleksplus.github.io/react-grid-table/",
     "contributors": [
         {
             "name": "Nadav Shaar",
@@ -16,6 +16,11 @@
             "name": "Ilay Ofir",
             "email": "ilayofir@gmail.com",
             "url": "https://github.com/IlayOfir"
+        },
+        {
+            "name": "aleksplus",
+            "email": "aleksplus@users.noreply.github.com",
+            "url": "https://github.com/aleksplus"
         }
     ],
     "keywords": [
