@@ -248,6 +248,7 @@ Each column (except for '[checkbox](#checkbox-column)' column) has support for t
 | label | string | the label to display in the header cell | the `field` property |
 | pinned | boolean | whether the column will be pinned to the side, **supported only in the first and last columns** | false |
 | visible | boolean | whether to display the column | true |
+| headerClassName | string | a custom class selector for the header cells | "" |
 | className | string | a custom class selector for all column cells | "" |
 | width | string | the initial width of the column in grid values (full list of [values](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)) | "200px" |
 | minResizeWidth | number | the minimum width of the column when resizing | `minColumnResizeWidth` prop |
