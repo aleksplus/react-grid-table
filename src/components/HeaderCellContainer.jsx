@@ -79,9 +79,7 @@ const HeaderCellContainer = ({ index, column, tableManager }) => {
                     isPinnedRight
                         ? " rgt-cell-header-pinned rgt-cell-header-pinned-right"
                         : ""
-                }${column.className ? " " + column.className : ""}${
-                    column.headerClassName ? column.headerClassName : ""
-                }`.trim();
+                } ${column.headerClassName}`.trim();
         }
 
         return (
