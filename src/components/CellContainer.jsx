@@ -29,11 +29,15 @@ const CellContainer = ({
 
     const getClassNames = () => {
         let classNames;
+        const additionalPropsClassName =
+            typeof additionalProps.className === "function"
+                ? additionalProps.className(data, column)
+                : additionalProps.className;
         const all = `rgt-cell rgt-row-${rowIndex} rgt-row-${
             rowIndex % 2 === 0 ? "even" : "odd"
         }${isSelected ? " rgt-row-selected" : ""}${
             isEdit ? " rgt-row-edit" : ""
-        } ${additionalProps.className || ""}`.trim();
+        } ${additionalPropsClassName || ""}`.trim();
         const virtualDefault = `${
             !tableHasSelection
                 ? ""
