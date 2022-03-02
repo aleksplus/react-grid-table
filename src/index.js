@@ -76,7 +76,7 @@ const GridTable = (props) => {
                         1 +
                         (isVirtualScroll ? 1 : 0) +
                         (children ? 1 : 0)
-                    }, max-content)`,
+                    }, auto)`,
                 }}
             >
                 {visibleColumns.map((visibleColumn, idx) => (
