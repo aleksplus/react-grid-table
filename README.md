@@ -1,8 +1,10 @@
+Fork @nadavshaar/react-grid-table
+
 # react-grid-table
 
 > A modular table, based on a CSS grid layout, optimized for customization.
 
-[![NPM](https://img.shields.io/npm/v/@nadavshaar/react-grid-table.svg)](https://www.npmjs.com/package/@nadavshaar/react-grid-table) [![Downloads](https://img.shields.io/npm/dt/@nadavshaar/react-grid-table)](https://www.npmjs.com/package/@nadavshaar/react-grid-table) 
+[![NPM](https://img.shields.io/npm/v/@nadavshaar/react-grid-table.svg)](https://www.npmjs.com/package/@nadavshaar/react-grid-table) [![Downloads](https://img.shields.io/npm/dt/@nadavshaar/react-grid-table)](https://www.npmjs.com/package/@nadavshaar/react-grid-table)
 
 **Supported features:**
 
@@ -54,63 +56,63 @@ const Username = ({ tableManager, value, field, data, column, colIndex, rowIndex
 }
 
 const rows = [
-    { 
-        "id": 1, 
-        "username": "wotham0", 
-        "gender": "Male", 
-        "last_visited": "12/08/2019", 
-        "test": {"x": 1, "y": 2}, 
+    {
+        "id": 1,
+        "username": "wotham0",
+        "gender": "Male",
+        "last_visited": "12/08/2019",
+        "test": {"x": 1, "y": 2},
         "avatar":"https://robohash.org/atquenihillaboriosam.bmp?size=32x32&set=set1"
     },
-    { 
-        "id": 2, 
-        "username": "dbraddon2", 
-        "gender": "Female", 
-        "last_visited": "16/07/2018", 
-        "test": {"x": 3, "y": 4}, 
+    {
+        "id": 2,
+        "username": "dbraddon2",
+        "gender": "Female",
+        "last_visited": "16/07/2018",
+        "test": {"x": 3, "y": 4},
         "avatar":"https://robohash.org/etsedex.bmp?size=32x32&set=set1"
     },
-    { 
-        "id": 3, 
-        "username": "dridett3", 
-        "gender": "Male", 
-        "last_visited": "20/11/2016", 
-        "test": {"x": 5, "y": 8}, 
+    {
+        "id": 3,
+        "username": "dridett3",
+        "gender": "Male",
+        "last_visited": "20/11/2016",
+        "test": {"x": 5, "y": 8},
         "avatar":"https://robohash.org/inimpeditquam.bmp?size=32x32&set=set1"
     },
-    { 
-        "id": 4, 
-        "username": "gdefty6", 
-        "gender": "Female", 
-        "last_visited": "03/08/2019", 
-        "test": {"x": 7, "y": 4}, 
+    {
+        "id": 4,
+        "username": "gdefty6",
+        "gender": "Female",
+        "last_visited": "03/08/2019",
+        "test": {"x": 7, "y": 4},
         "avatar":"https://robohash.org/nobisducimussaepe.bmp?size=32x32&set=set1"
     },
-    { 
-        "id": 5, 
-        "username": "hbeyer9", 
-        "gender": "Male", 
-        "last_visited": "10/10/2016", 
-        "test": {"x": 2, "y": 2}, 
+    {
+        "id": 5,
+        "username": "hbeyer9",
+        "gender": "Male",
+        "last_visited": "10/10/2016",
+        "test": {"x": 2, "y": 2},
         "avatar":"https://robohash.org/etconsequatureaque.jpg?size=32x32&set=set1"
     }
 ];
 
 const columns = [
     {
-        id: 1, 
-        field: 'username', 
+        id: 1,
+        field: 'username',
         label: 'Username',
         cellRenderer: Username,
-    }, 
+    },
     {
-        id: 2, 
-        field: 'gender', 
+        id: 2,
+        field: 'gender',
         label: 'Gender',
     },
     {
-        id: 3, 
-        field: 'last_visited', 
+        id: 3,
+        field: 'last_visited',
         label: 'Last Visited',
         sort: ({a, b, isAscending}) => {
             let aa = a.split('/').reverse().join(),
@@ -119,8 +121,8 @@ const columns = [
         }
     },
     {
-        id: 4, 
-        field: 'test', 
+        id: 4,
+        field: 'test',
         label: 'Score',
         getValue: ({value, column}) => value.x + value.y
     }
@@ -153,13 +155,13 @@ export default MyAwesomeTable;
 [![paypal](https://image.flaticon.com/icons/png/128/2871/2871557.png)](https://www.paypal.com/donate?hosted_button_id=VAEHCLA692FMW)
 
 ## Main components
-**HEADER (optional | customizable):** search & column visibility management. 
+**HEADER (optional | customizable):** search & column visibility management.
 
-**TABLE-HEADER:** sort, resize & column reorder. 
+**TABLE-HEADER:** sort, resize & column reorder.
 
-**TABLE-BODY:** displaying data / loader / no-results, row editing & row selection. 
+**TABLE-BODY:** displaying data / loader / no-results, row editing & row selection.
 
-**FOOTER (optional | customizable):** rows information, rows per page & pagination. 
+**FOOTER (optional | customizable):** rows information, rows per page & pagination.
 
 
 ## Props
@@ -277,7 +279,7 @@ Each column (except for '[checkbox](#checkbox-column)' column) has support for t
   className: '',
   pinned: false,
   width: '200px',
-  getValue: ({value, column}) => value, 
+  getValue: ({value, column}) => value,
   setValue: ({ value, data, setRow, column }) => { setRow({ ...data, [column.field]: value}) },
   minResizeWidth: 70,
   maxResizeWidth: null,
@@ -342,8 +344,8 @@ Each row should have a unique identifier field, which by default is `id`, but it
 // Example for a single row data
 
 {
-  "id": "some-unique-id", 
-  "objectValueField": {"x": 1, "y": 2}, 
+  "id": "some-unique-id",
+  "objectValueField": {"x": 1, "y": 2},
   "username":"wotham0",
   "first_name":"Waldemar",
   "last_name":"Otham",
@@ -355,15 +357,15 @@ Each row should have a unique identifier field, which by default is `id`, but it
 }
 ```
 
-**Note:** If a property value is not of type string, you'll have to use the `getValue` function on the column in order to extract the desired value. 
+**Note:** If a property value is not of type string, you'll have to use the `getValue` function on the column in order to extract the desired value.
 
 **Example:**
 
-Let's say the field's value for a cell is an object: 
+Let's say the field's value for a cell is an object:
 
-`{ ... , fullName: {firstName: 'some-first-name', lastName: 'some-last-name'} }`, 
+`{ ... , fullName: {firstName: 'some-first-name', lastName: 'some-last-name'} }`,
 
-Its `getValue` function for displaying the first and last name as a full name, would be: 
+Its `getValue` function for displaying the first and last name as a full name, would be:
 
 `getValue: ({value, column}) => value.firstName + ' ' +  value.lastName`
 
@@ -416,11 +418,11 @@ const Header = ({tableManager}) => {
                 <label htmlFor="my-search" style={{fontWeight: 500, marginRight: 10}}>
                     Search for:
                 </label>
-                <input 
+                <input
                     name="my-search"
-                    type="search" 
-                    value={searchText} 
-                    onChange={e => setSearchText(e.target.value)} 
+                    type="search"
+                    value={searchText}
+                    onChange={e => setSearchText(e.target.value)}
                     style={{width: 300}}
                 />
             </div>
@@ -429,11 +431,11 @@ const Header = ({tableManager}) => {
                 {
                     columns.map((column, idx) => (
                         <div key={idx} style={{flex: 1}}>
-                            <input 
+                            <input
                                 id={`checkbox-${idx}`}
-                                type="checkbox" 
-                                onChange={ e => toggleColumnVisibility(column.id) } 
-                                checked={ column.visible !== false } 
+                                type="checkbox"
+                                onChange={ e => toggleColumnVisibility(column.id) }
+                                checked={ column.visible !== false }
                             />
                             <label htmlFor={`checkbox-${idx}`} style={{flex: 1, cursor: 'pointer'}}>
                                 {column.label}
@@ -629,10 +631,10 @@ API Structure:
 ### Sync/Async
 `react-grid-table` supports 4 different data managing flows:
 
-#### Sync: 
+#### Sync:
 
-Use this flow if you have all the data locally.  
-Just pass all the data using the `rows` prop.  
+Use this flow if you have all the data locally.
+Just pass all the data using the `rows` prop.
 
 **Required props**:
 
@@ -657,12 +659,12 @@ export const SyncedTable = () => {
         />
     )
 }
-``` 
+```
 
-#### Async (Uncontrolled): 
+#### Async (Uncontrolled):
 
-Use this flow if you need to fetch your data asynchrony, and want `react-grid-table` to manage it internally.  
-All the data is supplied to the table via the `onRowsRequest` prop.  
+Use this flow if you need to fetch your data asynchrony, and want `react-grid-table` to manage it internally.
+All the data is supplied to the table via the `onRowsRequest` prop.
 
 **Required props**:
 
@@ -676,7 +678,7 @@ All the data is supplied to the table via the `onRowsRequest` prop.
 
 ```JSX
 export const AsyncUncontrolledTable = () => {
-    
+
     const columns = getColumns();
 
     const onRowsRequest = async (requestData, tableManager) => {
@@ -691,7 +693,7 @@ export const AsyncUncontrolledTable = () => {
         }).then(response => response.json()).catch(console.warn);
 
         if(!response?.items) return;
-        
+
         return {
             rows: response.items,
             totalRows: response.totalItems
@@ -705,12 +707,12 @@ export const AsyncUncontrolledTable = () => {
         />
     )
 }
-``` 
+```
 
-#### Async (Controlled): 
+#### Async (Controlled):
 
-Use this flow if you need to fetch your data asynchrony, and want `react-grid-table` to manage it internally, but still be able to use it in other places in the app.  
-All the data is supplied to the table via the `onRowsRequest` prop, but is controlled by a parent component via `rows`, `onRowsChange`, `totalRows` & `onTotalRowsChange` props.   
+Use this flow if you need to fetch your data asynchrony, and want `react-grid-table` to manage it internally, but still be able to use it in other places in the app.
+All the data is supplied to the table via the `onRowsRequest` prop, but is controlled by a parent component via `rows`, `onRowsChange`, `totalRows` & `onTotalRowsChange` props.
 
 **Required props**:
 
@@ -728,7 +730,7 @@ All the data is supplied to the table via the `onRowsRequest` prop, but is contr
 
 ```JSX
 export const AsyncControlledTable = () => {
-    
+
     const columns = getColumns();
     let [rows, setRows] = useState();
     let [totalRows, setTotalRows] = useState();
@@ -745,7 +747,7 @@ export const AsyncControlledTable = () => {
         }).then(response => response.json()).catch(console.warn);
 
         if(!response?.items) return;
-        
+
         return {
             rows: response.items,
             totalRows: response.totalItems
@@ -763,18 +765,18 @@ export const AsyncControlledTable = () => {
         />
     )
 }
-``` 
-#### Async (Managed): 
+```
+#### Async (Managed):
 
-Use it if you need to fetch your data asynchrony, and manage it yourself (Useful when there are other places that should be able to fetch the same data).  
-All the data is supplied to the table via the `rows` prop, which should be updated using the `onRowsRequest` prop.   
-**Note**: `react-grid-table` will not necessarily ask for concurrent data, which means that "holes" in the data are possible. These "holes" needs to be filled with null/undefined items in order to ensure proper functionally. 
+Use it if you need to fetch your data asynchrony, and manage it yourself (Useful when there are other places that should be able to fetch the same data).
+All the data is supplied to the table via the `rows` prop, which should be updated using the `onRowsRequest` prop.
+**Note**: `react-grid-table` will not necessarily ask for concurrent data, which means that "holes" in the data are possible. These "holes" needs to be filled with null/undefined items in order to ensure proper functionally.
 
 To achieve this, you can use:
 
 ```JSX
 let mergedRows = tableManager.asyncApi.mergeRowsAt(rows, fetchedRows, at)
-``` 
+```
 
 **Required props**:
 
@@ -793,7 +795,7 @@ let mergedRows = tableManager.asyncApi.mergeRowsAt(rows, fetchedRows, at)
 const controller = new AbortController();
 
 export const AsyncManagedTable = () => {
-    
+
     const columns = getColumns();
     let rowsRef = useRef([]);
     let [totalRows, setTotalRows] = useState();
@@ -834,7 +836,7 @@ export const AsyncManagedTable = () => {
         />
     )
 }
-``` 
+```
 
 ### Row-Editing
 Row editing can be done by rendering the edit button using the `cellRenderer` property in the column configuration, then when clicked, it will control the `editRowId` prop, then the table will render the editing components for columns that are defined as `editable` (true by default), and as was defined in the `editorCellRenderer` which by default will render a text input.
@@ -862,19 +864,19 @@ let columns = [
         sortable: false,
         resizable: false,
         cellRenderer: ({ tableManager, value, data, column, colIndex, rowIndex }) => (
-            <button 
-                style={{marginLeft: 20}} 
+            <button
+                style={{marginLeft: 20}}
                 onClick={e => tableManager.rowEditApi.setEditRowId(data.id)}
             >&#x270E;</button>
         ),
         editorCellRenderer: ({ tableManager, value, data, column, colIndex, rowIndex, onChange }) => (
             <div style={{display: 'inline-flex'}}>
-                <button 
-                    style={{marginLeft: 20}} 
+                <button
+                    style={{marginLeft: 20}}
                     onClick={e => tableManager.rowEditApi.setEditRowId(null)}
                 >&#x2716;</button>
-                <button 
-                    style={{marginLeft: 10, marginRight: 20}} 
+                <button
+                    style={{marginLeft: 10, marginRight: 20}}
                     onClick={e => {
                         let rowsClone = [...rowsData];
                         let updatedRowIndex = rowsClone.findIndex(r => r.id === data.id);
@@ -890,9 +892,9 @@ let columns = [
 ];
 
 // render
-<GridTable 
+<GridTable
     columns={columns}
-    rows={rowsData} 
+    rows={rowsData}
     //editRowId={editRowId}
     //onEditRowIdChange={setEditRowId}
     ...
@@ -906,8 +908,8 @@ For columns that hold values other than string, you'll need to define the `setVa
 
 ```JSX
 setValue: ({value, data, setRow, column}) => {
-    // value: '35', 
-    // data: { ..., columnField: { fieldToUpdate: '27' }} 
+    // value: '35',
+    // data: { ..., columnField: { fieldToUpdate: '27' }}
     let rowClone = { ...data };
     rowClone[column.field].fieldToUpdate = value;
     setRow(rowClone);
