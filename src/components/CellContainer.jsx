@@ -1,18 +1,20 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, forwardRef } from "react";
 import { getHighlightedText } from "../utils";
 
-const CellContainer = ({
-    rowId,
-    data,
-    column,
-    rowIndex,
-    colIndex,
-    isEdit,
-    disableSelection,
-    isSelected,
-    tableManager,
-    forwardRef,
-}) => {
+const CellContainer = forwardRef(function CellContainerForwardRef(
+    {
+        rowId,
+        data,
+        column,
+        rowIndex,
+        colIndex,
+        isEdit,
+        disableSelection,
+        isSelected,
+        tableManager,
+    },
+    forwardRef
+) {
     let {
         id,
         config: {
@@ -25,6 +27,7 @@ const CellContainer = ({
         rowSelectionApi: { toggleRowSelection },
         searchApi: { searchText, valuePassesSearch },
         columnsApi: { visibleColumns },
+        isLoading,
     } = tableManager;
 
     const getClassNames = () => {
@@ -133,7 +136,18 @@ const CellContainer = ({
     let classNames = getClassNames();
     let value = getValue();
 
-    let cellProps = { tableManager, value, data, column, colIndex, rowIndex };
+    const cellProps = React.useMemo(
+        () => ({
+            tableManager,
+            value,
+            data,
+            column,
+            colIndex,
+            rowIndex,
+            loading: isLoading,
+        }),
+        [tableManager, value, data, column, colIndex, rowIndex, isLoading]
+    );
     const isFirstEditableCell = useMemo(
         () =>
             visibleColumns.findIndex(
@@ -143,6 +157,10 @@ const CellContainer = ({
             ) === colIndex,
         [visibleColumns, colIndex]
     );
+
+    const Cell = column.cellRenderer;
+    const CellPlaceholder = column.placeHolderRenderer;
+    const CellEdit = column.editorCellRenderer;
 
     return (
         <div
@@ -156,25 +174,25 @@ const CellContainer = ({
             className={classNames}
             ref={forwardRef}
         >
-            {column.id === "virtual"
-                ? null
-                : column.id === "checkbox"
-                ? column.cellRenderer({
-                      ...cellProps,
-                      onChange: () => toggleRowSelection(rowId),
-                      disabled: disableSelection,
-                  })
-                : !data
-                ? column.placeHolderRenderer(cellProps)
-                : column.editable && isEdit
-                ? column.editorCellRenderer({
-                      ...cellProps,
-                      onChange: setEditRow,
-                      isFirstEditableCell,
-                  })
-                : column.cellRenderer(cellProps)}
+            {column.id === "virtual" ? null : column.id === "checkbox" ? (
+                <Cell
+                    {...cellProps}
+                    onChange={() => toggleRowSelection(rowId)}
+                    disabled={disableSelection}
+                />
+            ) : !data ? (
+                <CellPlaceholder {...cellProps} />
+            ) : column.editable && isEdit ? (
+                <CellEdit
+                    {...cellProps}
+                    onChange={setEditRow}
+                    isFirstEditableCell={isFirstEditableCell}
+                />
+            ) : (
+                <Cell {...cellProps} />
+            )}
         </div>
     );
-};
+});
 
 export default CellContainer;

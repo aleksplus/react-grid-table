@@ -1,7 +1,10 @@
 import React from "react";
 import { CellContainer } from "./";
 
-const Row = ({ index, data, tableManager, measureRef }) => {
+const Row = React.forwardRef(function RowForwardRed(
+    { index, data, tableManager },
+    measureRef
+) {
     const {
         config: { isVirtualScroll, rowIdField },
         rowEditApi: { editRow, getIsRowEditable },
@@ -58,6 +61,6 @@ const Row = ({ index, data, tableManager, measureRef }) => {
             tableManager={tableManager}
         />
     ));
-};
+});
 
 export default Row;

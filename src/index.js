@@ -48,13 +48,49 @@ const GridTable = (props) => {
         typeof props.children === "function"
             ? props.children({ columns: visibleColumns })
             : props.children;
+    const hasChildren = !!children;
+
+    const getContainerCb = React.useCallback(() => tableRef, [tableRef]);
+
+    const style = React.useMemo(
+        () => ({
+            ...additionalProps.style,
+            display: "grid",
+            overflow: "auto",
+            flex: 1,
+            gridTemplateColumns: visibleColumns
+                .map((column) => column.width)
+                .join(" "),
+            gridTemplateRows: `repeat(${
+                pageRows.length +
+                1 +
+                (isVirtualScroll ? 1 : 0) +
+                (hasChildren ? 1 : 0)
+            }, max-content)`,
+        }),
+        [
+            additionalProps.style,
+            hasChildren,
+            isVirtualScroll,
+            pageRows.length,
+            visibleColumns,
+        ]
+    );
+
+    const measureRefs = React.useRef([]);
+    React.useEffect(() => {
+        virtualItems.map((virtualizedRow) => {
+            measureRefs.current[virtualizedRow.index] =
+                virtualizedRow.measureRef;
+        });
+    }, [virtualItems, visibleColumns]);
 
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
             <Header tableManager={tableManager} />
             <SortableList
                 forwardRef={tableRef}
-                getContainer={() => tableRef}
+                getContainer={getContainerCb}
                 className={classNamesContainer}
                 axis="x"
                 lockToContainerEdges
@@ -63,21 +99,7 @@ const GridTable = (props) => {
                 useDragHandle={!!DragHandle}
                 onSortStart={onColumnReorderStart}
                 onSortEnd={onColumnReorderEnd}
-                style={{
-                    ...additionalProps.style,
-                    display: "grid",
-                    overflow: "auto",
-                    flex: 1,
-                    gridTemplateColumns: visibleColumns
-                        .map((column) => column.width)
-                        .join(" "),
-                    gridTemplateRows: `repeat(${
-                        pageRows.length +
-                        1 +
-                        (isVirtualScroll ? 1 : 0) +
-                        (children ? 1 : 0)
-                    }, max-content)`,
-                }}
+                style={style}
             >
                 {visibleColumns.map((visibleColumn, idx) => (
                     <HeaderCellContainer
@@ -101,7 +123,11 @@ const GridTable = (props) => {
                                       key={virtualizedRow.index}
                                       index={virtualizedRow.index}
                                       data={pageRows[virtualizedRow.index]}
-                                      measureRef={virtualizedRow.measureRef}
+                                      ref={
+                                          measureRefs.current[
+                                              virtualizedRow.index
+                                          ]
+                                      }
                                       tableManager={tableManager}
                                   />
                               )),
