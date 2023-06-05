@@ -167,7 +167,7 @@ const ControllersDrawer = ({ isOpen, onToggle, controllers }) => {
                         {GITHUB_ICON}
                     </a>
                     <a
-                        href="https://www.npmjs.com/package/@nadavshaar/react-grid-table"
+                        href="https://www.npmjs.com/package/@p.aleks/react-grid-table"
                         style={styles.link}
                         title="NPM"
                     >
