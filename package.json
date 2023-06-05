@@ -1,6 +1,6 @@
 {
     "name": "@p.aleks/react-grid-table",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "description": "A modular table, based on a CSS grid layout, optimized for customization.",
     "author": "Nadav Shaar",
     "license": "MIT",
