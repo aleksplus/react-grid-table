@@ -57,7 +57,7 @@ const Row = React.forwardRef(function RowForwardRed(
             isSelected={isSelected}
             isEdit={isEdit}
             disableSelection={disableSelection}
-            forwardRef={colIndex === 0 ? measureRef : undefined}
+            ref={colIndex === 0 ? measureRef : undefined}
             tableManager={tableManager}
         />
     ));
