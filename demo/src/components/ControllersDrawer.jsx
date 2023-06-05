@@ -160,7 +160,7 @@ const ControllersDrawer = ({ isOpen, onToggle, controllers }) => {
                     }}
                 >
                     <a
-                        href="https://github.com/NadavShaar/react-grid-table"
+                        href="https://github.com/aleksplus/react-grid-table"
                         style={styles.link}
                         title="Github"
                     >
