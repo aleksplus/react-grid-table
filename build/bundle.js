@@ -367,7 +367,7 @@ var ControllersDrawer = function ControllersDrawer(_ref) {
     style: styles.link,
     title: "Github"
   }, GITHUB_ICON), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement("a", {
-    href: "https://www.npmjs.com/package/@nadavshaar/react-grid-table",
+    href: "https://www.npmjs.com/package/@p.aleks/react-grid-table",
     style: styles.link,
     title: "NPM"
   }, NPM_ICON))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement("div", {
