@@ -4722,16 +4722,14 @@ var useColumnsReorder = function useColumnsReorder(props, tableManager) {
     enumerable: false,
     writable: true
   });
-
-  columnsReorderApi.onColumnReorderStart = function (sortData) {
+  columnsReorderApi.onColumnReorderStart = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (sortData) {
     var _props$onColumnReorde;
 
     columnsReorderApi.isColumnReordering = true;
     sortData.helper.classList.add("rgt-column-sort-ghost");
     (_props$onColumnReorde = props.onColumnReorderStart) === null || _props$onColumnReorde === void 0 ? void 0 : _props$onColumnReorde.call(props, sortData, tableManager);
-  };
-
-  columnsReorderApi.onColumnReorderEnd = function (sortData) {
+  }, [columnsReorderApi, props, tableManager]);
+  columnsReorderApi.onColumnReorderEnd = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (sortData) {
     var _props$onColumnReorde2;
 
     var _tableManager$columns = tableManager.columnsApi,
@@ -4748,8 +4746,7 @@ var useColumnsReorder = function useColumnsReorder(props, tableManager) {
     newColumns.splice.apply(newColumns, [visibleColumns[sortData.newIndex].index, 0].concat((0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(newColumns.splice(visibleColumns[sortData.oldIndex].index, 1))));
     setColumns(newColumns);
     (_props$onColumnReorde2 = props.onColumnReorderEnd) === null || _props$onColumnReorde2 === void 0 ? void 0 : _props$onColumnReorde2.call(props, sortData, tableManager);
-  };
-
+  }, [columnsReorderApi, props, tableManager]);
   return columnsReorderApi;
 };
 
@@ -5253,13 +5250,12 @@ var useRowSelection = function useRowSelection(props, tableManager) {
 
   rowSelectionApi.selectedRowsIds = (_props$selectedRowsId = props.selectedRowsIds) !== null && _props$selectedRowsId !== void 0 ? _props$selectedRowsId : selectedRowsIds;
   rowSelectionApi.getIsRowSelectable = props.getIsRowSelectable;
-
-  rowSelectionApi.setSelectedRowsIds = function (newSelectedItems) {
+  rowSelectionApi.setSelectedRowsIds = (0,react__WEBPACK_IMPORTED_MODULE_2__.useCallback)(function (newSelectedItems) {
     var _props$onSelectedRows;
 
     if (props.selectedRowsIds === undefined || props.onSelectedRowsChange === undefined) setSelectedRowsIds(newSelectedItems);
     (_props$onSelectedRows = props.onSelectedRowsChange) === null || _props$onSelectedRows === void 0 ? void 0 : _props$onSelectedRows.call(props, newSelectedItems, tableManager);
-  };
+  }, [props, tableManager]);
 
   rowSelectionApi.toggleRowSelection = function (rowId) {
     var newSelectedRowsIds = (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(rowSelectionApi.selectedRowsIds);
