@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
 const useColumnsReorder = (props, tableManager) => {
     const columnsReorderApi = useRef({ isColumnReordering: false }).current;
@@ -12,34 +12,40 @@ const useColumnsReorder = (props, tableManager) => {
         writable: true,
     });
 
-    columnsReorderApi.onColumnReorderStart = (sortData) => {
-        columnsReorderApi.isColumnReordering = true;
+    columnsReorderApi.onColumnReorderStart = useCallback(
+        (sortData) => {
+            columnsReorderApi.isColumnReordering = true;
 
-        sortData.helper.classList.add("rgt-column-sort-ghost");
+            sortData.helper.classList.add("rgt-column-sort-ghost");
 
-        props.onColumnReorderStart?.(sortData, tableManager);
-    };
+            props.onColumnReorderStart?.(sortData, tableManager);
+        },
+        [columnsReorderApi, props, tableManager]
+    );
 
-    columnsReorderApi.onColumnReorderEnd = (sortData) => {
-        const {
-            columnsApi: { columns, visibleColumns, setColumns },
-        } = tableManager;
+    columnsReorderApi.onColumnReorderEnd = useCallback(
+        (sortData) => {
+            const {
+                columnsApi: { columns, visibleColumns, setColumns },
+            } = tableManager;
 
-        setTimeout(() => (columnsReorderApi.isColumnReordering = false), 0);
+            setTimeout(() => (columnsReorderApi.isColumnReordering = false), 0);
 
-        if (sortData.oldIndex === sortData.newIndex) return;
+            if (sortData.oldIndex === sortData.newIndex) return;
 
-        const newColumns = [...columns];
-        newColumns.splice(
-            visibleColumns[sortData.newIndex].index,
-            0,
-            ...newColumns.splice(visibleColumns[sortData.oldIndex].index, 1)
-        );
+            const newColumns = [...columns];
+            newColumns.splice(
+                visibleColumns[sortData.newIndex].index,
+                0,
+                ...newColumns.splice(visibleColumns[sortData.oldIndex].index, 1)
+            );
 
-        setColumns(newColumns);
+            setColumns(newColumns);
 
-        props.onColumnReorderEnd?.(sortData, tableManager);
-    };
+            props.onColumnReorderEnd?.(sortData, tableManager);
+        },
+        [columnsReorderApi, props, tableManager]
+    );
 
     return columnsReorderApi;
 };
