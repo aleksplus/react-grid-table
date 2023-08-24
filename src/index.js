@@ -77,14 +77,6 @@ const GridTable = (props) => {
         ]
     );
 
-    const measureRefs = React.useRef([]);
-    React.useEffect(() => {
-        virtualItems.map((virtualizedRow) => {
-            measureRefs.current[virtualizedRow.index] =
-                virtualizedRow.measureRef;
-        });
-    }, [virtualItems, visibleColumns]);
-
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
             <Header tableManager={tableManager} />
@@ -123,11 +115,7 @@ const GridTable = (props) => {
                                       key={virtualizedRow.index}
                                       index={virtualizedRow.index}
                                       data={pageRows[virtualizedRow.index]}
-                                      ref={
-                                          measureRefs.current[
-                                              virtualizedRow.index
-                                          ]
-                                      }
+                                      ref={virtualizedRow.measureRef}
                                       tableManager={tableManager}
                                   />
                               )),
