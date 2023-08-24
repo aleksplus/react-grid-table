@@ -72,6 +72,20 @@ const CellContainer = forwardRef(function CellContainerForwardRef(
         return classNames;
     };
 
+    const textValue = useMemo(
+        () =>
+            data &&
+            column
+                .getValue?.({
+                    tableManager,
+                    value: isEdit ? editRow[column.field] : data[column.field],
+                    column,
+                    rowData: data,
+                })
+                ?.toString?.(),
+        [column, data, editRow, isEdit, tableManager]
+    );
+
     const getValue = () => {
         let value;
 
@@ -80,17 +94,7 @@ const CellContainer = forwardRef(function CellContainerForwardRef(
                 value = isSelected;
                 break;
             default:
-                value =
-                    data &&
-                    column
-                        .getValue?.({
-                            tableManager,
-                            value: isEdit
-                                ? editRow[column.field]
-                                : data[column.field],
-                            column,
-                        })
-                        ?.toString?.();
+                value = textValue;
                 if (
                     !isEdit &&
                     highlightSearch &&
@@ -140,13 +144,23 @@ const CellContainer = forwardRef(function CellContainerForwardRef(
         () => ({
             tableManager,
             value,
+            textValue,
             data,
             column,
             colIndex,
             rowIndex,
             loading: isLoading,
         }),
-        [tableManager, value, data, column, colIndex, rowIndex, isLoading]
+        [
+            tableManager,
+            value,
+            textValue,
+            data,
+            column,
+            colIndex,
+            rowIndex,
+            isLoading,
+        ]
     );
     const isFirstEditableCell = useMemo(
         () =>

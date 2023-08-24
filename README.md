@@ -2,7 +2,7 @@ Fork @nadavshaar/react-grid-table
 
 # react-grid-table
 
-> A modular table, based on a CSS grid layout, optimized for customization.
+> A modular table, based on a CSS grid layout, optimized for fast configuration and deep customization.
 > 
 [![NPM](https://img.shields.io/npm/v/@p.aleks/react-grid-table.svg)](https://www.npmjs.com/package/@p.aleks/react-grid-table) [![Downloads](https://img.shields.io/npm/dt/@p.aleks/react-grid-table)](https://www.npmjs.com/package/@p.aleks/react-grid-table)
 
@@ -114,7 +114,7 @@ const columns = [
         id: 3,
         field: 'last_visited',
         label: 'Last Visited',
-        sort: ({a, b, isAscending}) => {
+        sort: ({ a, b, isAscending }) => {
             let aa = a.split('/').reverse().join(),
             bb = b.split('/').reverse().join();
             return aa < bb ? isAscending ? -1 : 1 : (aa > bb ? isAscending ? 1 : -1 : 0);
@@ -124,7 +124,7 @@ const columns = [
         id: 4,
         field: 'test',
         label: 'Score',
-        getValue: ({value, column}) => value.x + value.y
+        getValue: ({ value }) => value.x + value.y
     }
 ];
 
@@ -152,7 +152,7 @@ export default MyAwesomeTable;
 
 #### Support this package
 
-[![paypal](https://image.flaticon.com/icons/png/128/2871/2871557.png)](https://www.paypal.com/donate?hosted_button_id=VAEHCLA692FMW)
+[![paypal](https://cdn-icons-png.flaticon.com/128/2871/2871557.png)](https://www.paypal.com/donate?hosted_button_id=VAEHCLA692FMW)
 
 ## Main components
 **HEADER (optional | customizable):** search & column visibility management.
@@ -279,7 +279,7 @@ Each column (except for '[checkbox](#checkbox-column)' column) has support for t
   className: '',
   pinned: false,
   width: '200px',
-  getValue: ({value, column}) => value,
+  getValue: ({ tableManager, value, column, rowData }) => value, 
   setValue: ({ value, data, setRow, column }) => { setRow({ ...data, [column.field]: value}) },
   minResizeWidth: 70,
   maxResizeWidth: null,
@@ -357,7 +357,9 @@ Each row should have a unique identifier field, which by default is `id`, but it
 }
 ```
 
-**Note:** If a property value is not of type string, you'll have to use the `getValue` function on the column in order to extract the desired value.
+**Note:** If a property value is not of type string, or in cases you don't specify a field for the column, you'll have to use the `getValue` function on the column in order to extract the desired value. 
+
+**Signature**: getValue: ({ tableManager, value, column, rowData }) => string
 
 **Example:**
 
@@ -367,7 +369,7 @@ Let's say the field's value for a cell is an object:
 
 Its `getValue` function for displaying the first and last name as a full name, would be:
 
-`getValue: ({value, column}) => value.firstName + ' ' +  value.lastName`
+`getValue: ({ value }) => value.firstName + ' ' +  value.lastName`
 
 The returned value will be used for searching, sorting etc...
 
@@ -559,6 +561,7 @@ API Structure:
 | name | type | description | usage |
 |---|---|---|---|
 | searchText | string | text for search | --- |
+| validSearchText | string | is an empty string if the searched text did not pass the `minSearchChars`, if it does pass, it will be equal to `searchText` | --- |
 | setSearchText | function | updates the search text | `setSearchText('hello')` |
 | searchRows | function | filters rows based on the search text, using the search method defined on the columns | `searchRows(rows)` |
 | valuePassesSearch | function | returns true if a value passes the search for a certain column | `valuePassesSearch('hello', column)` |
@@ -576,7 +579,8 @@ API Structure:
 
 | name | type | description | usage |
 |---|---|---|---|
-| rows | array | the rows | --- |
+| rows | array | the rows data (in sync mode - the rows data after the search filter and the sort)  | --- |
+| originalRows | array | the rows data untouched (in sync mode - the rows data before the search filter) | --- |
 | setRows | function | updates the rows | `setRows(rows)` |
 | totalRows | number | the total number of rows | --- |
 | setTotalRows | function | updates the total number of rows | `setTotalRows(1000)` |
@@ -629,7 +633,7 @@ API Structure:
 # How to...
 
 ### Sync/Async
-`react-grid-table` supports 4 different data managing flows:
+`react-grid-table` supports 4 different data models:
 
 #### Sync:
 
