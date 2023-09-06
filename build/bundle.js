@@ -737,7 +737,7 @@ var ButtonsEditorCell = function ButtonsEditorCell(_ref) {
     onClick: function onClick(e) {
       e.stopPropagation();
 
-      var rowsClone = (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(tableManager.rowsApi.rows);
+      var rowsClone = (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(tableManager.rowsApi.originalRows);
 
       var updatedRowIndex = rowsClone.findIndex(function (r) {
         return r.id === data.id;
@@ -1102,13 +1102,14 @@ __webpack_require__.r(__webpack_exports__);
 
 var Cell = function Cell(_ref) {
   var value = _ref.value,
+      textValue = _ref.textValue,
       tableManager = _ref.tableManager;
   var _tableManager$config$ = tableManager.config.additionalProps.cell,
       additionalProps = _tableManager$config$ === void 0 ? {} : _tableManager$config$;
   var classNames = ("rgt-cell-inner rgt-text-truncate " + (additionalProps.className || "")).trim();
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("div", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, additionalProps, {
     className: classNames,
-    title: value
+    title: textValue
   }), value);
 };
 
@@ -1190,9 +1191,18 @@ var CellContainer = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_2__.forwardRe
     return classNames;
   };
 
-  var getValue = function getValue() {
+  var textValue = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(function () {
     var _column$getValue, _column$getValue$call, _column$getValue$call2;
 
+    return data && ((_column$getValue = column.getValue) === null || _column$getValue === void 0 ? void 0 : (_column$getValue$call = _column$getValue.call(column, {
+      tableManager: tableManager,
+      value: isEdit ? editRow[column.field] : data[column.field],
+      column: column,
+      rowData: data
+    })) === null || _column$getValue$call === void 0 ? void 0 : (_column$getValue$call2 = _column$getValue$call.toString) === null || _column$getValue$call2 === void 0 ? void 0 : _column$getValue$call2.call(_column$getValue$call));
+  }, [column, data, editRow, isEdit, tableManager]);
+
+  var getValue = function getValue() {
     var value;
 
     switch (column.id) {
@@ -1201,11 +1211,7 @@ var CellContainer = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_2__.forwardRe
         break;
 
       default:
-        value = data && ((_column$getValue = column.getValue) === null || _column$getValue === void 0 ? void 0 : (_column$getValue$call = _column$getValue.call(column, {
-          tableManager: tableManager,
-          value: isEdit ? editRow[column.field] : data[column.field],
-          column: column
-        })) === null || _column$getValue$call === void 0 ? void 0 : (_column$getValue$call2 = _column$getValue$call.toString) === null || _column$getValue$call2 === void 0 ? void 0 : _column$getValue$call2.call(_column$getValue$call));
+        value = textValue;
         if (!isEdit && highlightSearch && valuePassesSearch(value, column)) return (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getHighlightedText)(value, searchText);
     }
 
@@ -1249,13 +1255,14 @@ var CellContainer = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_2__.forwardRe
     return {
       tableManager: tableManager,
       value: value,
+      textValue: textValue,
       data: data,
       column: column,
       colIndex: colIndex,
       rowIndex: rowIndex,
       loading: isLoading
     };
-  }, [tableManager, value, data, column, colIndex, rowIndex, isLoading]);
+  }, [tableManager, value, textValue, data, column, colIndex, rowIndex, isLoading]);
   var isFirstEditableCell = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(function () {
     return visibleColumns.findIndex(function (visibleColumn) {
       return visibleColumn.id !== "checkbox" && visibleColumn.editable !== false;
@@ -2317,7 +2324,7 @@ var LOADER = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg"
   dur: "1s",
   repeatCount: "indefinite"
 })))));
-var TRASH_ICON = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+var CLEAR_ICON = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
   height: "16",
   viewBox: "0 0 21 21",
   width: "16",
@@ -2325,19 +2332,21 @@ var TRASH_ICON = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
   fill: "none",
   fillRule: "evenodd",
-  stroke: "#2a2e3b",
+  stroke: "#125082",
   strokeLinecap: "round",
   strokeLinejoin: "round",
-  transform: "translate(3 2)"
+  transform: "translate(2 2)"
+}, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+  cx: "8.5",
+  cy: "8.5",
+  r: "8"
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+  transform: "matrix(0 1 -1 0 17 0)"
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-  d: "m2.5 2.5h10v12c0 1.1045695-.8954305 2-2 2h-6c-1.1045695 0-2-.8954305-2-2zm5-2c1.1045695 0 2 .8954305 2 2h-4c0-1.1045695.8954305-2 2-2z"
+  d: "m5.5 11.5 6-6"
 }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-  d: "m.5 2.5h14"
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-  d: "m5.5 5.5v8"
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-  d: "m9.5 5.5v8"
-})));
+  d: "m5.5 5.5 6 6"
+}))));
 var MENU_ICON = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "14",
@@ -2351,7 +2360,7 @@ var SORT_DESCENDING_ICON = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.creat
 var SEARCH_ICON = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, "\u26B2");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   loader: LOADER,
-  clearSelection: TRASH_ICON,
+  clearSelection: CLEAR_ICON,
   columnVisibility: MENU_ICON,
   sortAscending: SORT_ASCENDING_ICON,
   sortDescending: SORT_DESCENDING_ICON,
@@ -4459,7 +4468,8 @@ var useAsync = function useAsync(props, tableManager) {
       _tableManager$rowsApi = tableManager.rowsApi,
       rows = _tableManager$rowsApi.rows,
       totalRows = _tableManager$rowsApi.totalRows,
-      pageSize = tableManager.paginationApi.pageSize;
+      pageSize = tableManager.paginationApi.pageSize,
+      validSearchText = tableManager.searchApi.validSearchText;
   var asyncApi = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)({}).current;
   var rowsRequests = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)([]);
   asyncApi.batchSize = (_props$batchSize = props.batchSize) !== null && _props$batchSize !== void 0 ? _props$batchSize : pageSize;
@@ -4526,7 +4536,13 @@ var useAsync = function useAsync(props, tableManager) {
     if (mode === "sync") return;
     var _tableManager$rowsApi3 = tableManager.rowsApi,
         setRows = _tableManager$rowsApi3.setRows,
-        setTotalRows = _tableManager$rowsApi3.setTotalRows;
+        setTotalRows = _tableManager$rowsApi3.setTotalRows,
+        setSelectedRowsIds = tableManager.rowSelectionApi.setSelectedRowsIds,
+        _tableManager$rowEdit = tableManager.rowEditApi,
+        editRow = _tableManager$rowEdit.editRow,
+        setEditRowId = _tableManager$rowEdit.setEditRowId;
+    setSelectedRowsIds([]);
+    if (editRow) setEditRowId(null);
     rowsRequests.current = [];
     if (props.onRowsReset) props.onRowsReset(tableManager);else {
       setRows([]);
@@ -4545,8 +4561,14 @@ var useAsync = function useAsync(props, tableManager) {
     (_rows = rows).splice.apply(_rows, [at, newRows.length].concat((0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(newRows)));
 
     return rows;
-  };
+  }; // reset rows
 
+
+  (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
+    if (!tableManager.isInitialized) return;
+    if (mode === "sync") return;
+    asyncApi.resetRows();
+  }, [validSearchText, asyncApi, mode, tableManager.isInitialized, tableManager.sortApi.sort.colId, tableManager.sortApi.sort.isAsc]);
   (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     if (mode === "sync") return;
     var rowsRequest = getRowsRequest(tableManager, rowsRequests.current);
@@ -4999,7 +5021,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var usePagination = function usePagination(props, tableManager) {
-  var _props$page, _props$pageSize;
+  var _props$pageSize, _props$page;
 
   var mode = tableManager.mode,
       _tableManager$config = tableManager.config,
@@ -5020,9 +5042,9 @@ var usePagination = function usePagination(props, tableManager) {
       pageSize = _useState4[0],
       setPageSize = _useState4[1];
 
-  paginationApi.page = (_props$page = props.page) !== null && _props$page !== void 0 ? _props$page : page;
   paginationApi.pageSize = (_props$pageSize = props.pageSize) !== null && _props$pageSize !== void 0 ? _props$pageSize : pageSize;
   paginationApi.totalPages = Math.ceil(totalRows / paginationApi.pageSize);
+  paginationApi.page = Math.max(1, Math.min(paginationApi.totalPages, (_props$page = props.page) !== null && _props$page !== void 0 ? _props$page : page));
   paginationApi.pageRows = (0,react__WEBPACK_IMPORTED_MODULE_1__.useMemo)(function () {
     if (!isPaginated) return rows;
     var pageRows = rows.slice(paginationApi.pageSize * paginationApi.page - paginationApi.pageSize, paginationApi.pageSize * paginationApi.page); // fill missing page rows with nulls - makes sure we display PlaceHolderCells when moving to a new page (while not using virtual scroll)
@@ -5043,7 +5065,8 @@ var usePagination = function usePagination(props, tableManager) {
     var _props$onPageChange;
 
     page = ~~page;
-    if (page < 1 || paginationApi.totalPages < page) return;
+    page = Math.max(1, Math.min(paginationApi.totalPages, page));
+    if (paginationApi.page === page) return;
     if (props.page === undefined || props.onPageChange === undefined) setPage(page);
     (_props$onPageChange = props.onPageChange) === null || _props$onPageChange === void 0 ? void 0 : _props$onPageChange.call(props, page, tableManager);
     setTimeout(function () {
@@ -5057,8 +5080,14 @@ var usePagination = function usePagination(props, tableManager) {
     pageSize = ~~pageSize;
     if (props.pageSize === undefined || props.onPageSizeChange === undefined) setPageSize(pageSize);
     (_props$onPageSizeChan = props.onPageSizeChange) === null || _props$onPageSizeChan === void 0 ? void 0 : _props$onPageSizeChan.call(props, pageSize, tableManager);
-  };
+  }; // reset page number
 
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if (!tableManager.isInitialized) return;
+    if (tableManager.paginationApi.page === 1) return;
+    tableManager.paginationApi.setPage(1);
+  }, [tableManager.searchApi.validSearchText, tableManager.isInitialized, paginationApi, paginationApi.pageSize, tableManager.paginationApi]);
   return paginationApi;
 };
 
@@ -5206,10 +5235,19 @@ var useRowEdit = function useRowEdit(props, tableManager) {
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    rowEditApi.setEditRow(rowEditApi.editRowId && pageRows.find(function (item) {
-      return item && item[rowIdField] === rowEditApi.editRowId;
+    var _rowEditApi$editRow;
+
+    if (((_rowEditApi$editRow = rowEditApi.editRow) === null || _rowEditApi$editRow === void 0 ? void 0 : _rowEditApi$editRow[rowIdField]) === rowEditApi.editRowId) return;
+    rowEditApi.setEditRow(pageRows.find(function (item) {
+      return (item === null || item === void 0 ? void 0 : item[rowIdField]) === rowEditApi.editRowId;
     }) || null);
-  }, [pageRows, rowEditApi, rowEditApi.editRowId, rowIdField]);
+  }, [pageRows, rowEditApi, rowEditApi.editRowId, rowIdField]); // reset edit row
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if (!tableManager.paginationApi.pageRows.find(function (row, i) {
+      return ((row === null || row === void 0 ? void 0 : row[tableManager.config.rowIdField]) || i) === rowEditApi.editRowId;
+    })) tableManager.rowEditApi.setEditRowId(null);
+  }, [rowEditApi.editRowId, tableManager.config.rowIdField, tableManager.paginationApi.pageRows, tableManager.rowEditApi]);
   return rowEditApi;
 };
 
@@ -5313,7 +5351,20 @@ var useRowSelection = function useRowSelection(props, tableManager) {
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     if (!selectAllRef.current) return;
     selectAllRef.current.indeterminate = rowSelectionApi.selectAll.indeterminate;
-  }, [rowSelectionApi.selectAll.indeterminate]);
+  }, [rowSelectionApi.selectAll.indeterminate]); // filter selectedRows if their ids no longer exist in the rows
+
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    if (!tableManager.isInitialized) return;
+    var filteredSelectedRows = rowSelectionApi.selectedRowsIds.filter(function (selectedRowId) {
+      return tableManager.rowsApi.originalRows.find(function (row, i) {
+        return (row[tableManager.config.rowIdField] || i) === selectedRowId;
+      });
+    });
+
+    if (filteredSelectedRows.length !== rowSelectionApi.selectedRowsIds.length) {
+      rowSelectionApi.setSelectedRowsIds(filteredSelectedRows);
+    }
+  }, [tableManager.config.rowIdField, tableManager.isInitialized, tableManager.rowEditApi, rowSelectionApi, tableManager.rowsApi.originalRows]);
   return rowSelectionApi;
 };
 
@@ -5388,7 +5439,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var useRows = function useRows(props, tableManager) {
-  var _rowsApi$rows, _props$totalRows;
+  var _props$rows, _rowsApi$rows, _props$totalRows;
 
   var mode = tableManager.mode,
       searchRows = tableManager.searchApi.searchRows,
@@ -5409,10 +5460,9 @@ var useRows = function useRows(props, tableManager) {
     enumerable: false,
     writable: true
   });
+  rowsApi.originalRows = (_props$rows = props.rows) !== null && _props$rows !== void 0 ? _props$rows : rows;
   rowsApi.rows = (0,react__WEBPACK_IMPORTED_MODULE_1__.useMemo)(function () {
-    var _props$rows;
-
-    var newRows = (_props$rows = props.rows) !== null && _props$rows !== void 0 ? _props$rows : rows;
+    var newRows = rowsApi.originalRows;
 
     if (mode === "sync") {
       newRows = searchRows(newRows);
@@ -5420,7 +5470,7 @@ var useRows = function useRows(props, tableManager) {
     }
 
     return newRows;
-  }, [props.rows, rows, mode, searchRows, sortRows]);
+  }, [rowsApi.originalRows, mode, searchRows, sortRows]);
   rowsApi.onRowClick = props.onRowClick;
   rowsApi.totalRows = mode === "sync" ? (_rowsApi$rows = rowsApi.rows) === null || _rowsApi$rows === void 0 ? void 0 : _rowsApi$rows.length : (_props$totalRows = props.totalRows) !== null && _props$totalRows !== void 0 ? _props$totalRows : totalRows;
 
@@ -5474,6 +5524,7 @@ var useSearch = function useSearch(props, tableManager) {
       setSearchText = _useState2[1];
 
   searchApi.searchText = (_props$searchText = props.searchText) !== null && _props$searchText !== void 0 ? _props$searchText : searchText;
+  searchApi.validSearchText = searchApi.searchText.length >= minSearchChars ? searchApi.searchText : "";
 
   searchApi.setSearchText = function (searchText) {
     var _props$onSearchTextCh;
@@ -5485,40 +5536,44 @@ var useSearch = function useSearch(props, tableManager) {
   searchApi.valuePassesSearch = function (value, column) {
     if (!value) return false;
     if (!(column !== null && column !== void 0 && column.searchable)) return false;
-    if (searchApi.searchText.length < minSearchChars) return false;
+    if (!searchApi.validSearchText) return false;
     return column.search({
       value: value.toString(),
-      searchText: searchApi.searchText
+      searchText: searchApi.validSearchText
     });
   };
 
   searchApi.searchRows = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (rows) {
-    var cols = columns.reduce(function (cols, coldef) {
-      cols[coldef.field] = coldef;
-      return cols;
-    }, {});
-
-    if (searchApi.searchText.length >= minSearchChars) {
+    if (searchApi.validSearchText) {
       rows = rows.filter(function (item) {
         return Object.keys(item).some(function (key) {
-          if (cols[key] && cols[key].searchable) {
-            var value = cols[key].getValue({
+          var cols = columns.filter(function (column) {
+            return column.searchable && column.field === key;
+          });
+          var isValid = false;
+
+          for (var index = 0; index < cols.length; index++) {
+            var currentColumn = cols[index];
+            var value = currentColumn.getValue({
+              tableManager: tableManager,
               value: item[key],
-              column: cols[key]
+              column: currentColumn,
+              rowData: item
             });
-            return cols[key].search({
+            isValid = currentColumn.search({
               value: (value === null || value === void 0 ? void 0 : value.toString()) || "",
-              searchText: searchApi.searchText
+              searchText: searchApi.validSearchText
             });
+            if (isValid) break;
           }
 
-          return false;
+          return isValid;
         });
       });
     }
 
     return rows;
-  }, [searchApi.searchText, columns, minSearchChars]);
+  }, [columns, searchApi.validSearchText, tableManager]);
   return searchApi;
 };
 
@@ -5597,12 +5652,16 @@ var useSort = function useSort(props, tableManager) {
       rows = (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(rows);
       rows.sort(function (a, b) {
         var aVal = cols[sortApi.sort.colId].getValue({
+          tableManager: tableManager,
           value: a[cols[sortApi.sort.colId].field],
-          column: cols[sortApi.sort.colId]
+          column: cols[sortApi.sort.colId],
+          rowData: a
         });
         var bVal = cols[sortApi.sort.colId].getValue({
+          tableManager: tableManager,
           value: b[cols[sortApi.sort.colId].field],
-          column: cols[sortApi.sort.colId]
+          column: cols[sortApi.sort.colId],
+          rowData: b
         });
         if (cols[sortApi.sort.colId].sortable === false) return 0;
         return cols[sortApi.sort.colId].sort({
@@ -5614,7 +5673,7 @@ var useSort = function useSort(props, tableManager) {
     }
 
     return rows;
-  }, [sortApi.sort, columns]);
+  }, [sortApi.sort, columns, tableManager]);
 
   sortApi.toggleSort = function (colId) {
     var isAsc = true;
@@ -5671,12 +5730,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 var useTableManager = function useTableManager(props) {
   var _props$isLoading;
 
-  var tableManagerRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)({
+  var tableManager = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)({
     id: props.id || (0,_utils__WEBPACK_IMPORTED_MODULE_4__.uuid)(),
     isMounted: false,
     isInitialized: false
-  });
-  var tableManager = tableManagerRef.current;
+  }).current;
   Object.defineProperty(tableManager, "columnsReorderApi", {
     enumerable: false,
     writable: true
@@ -5734,27 +5792,7 @@ var useTableManager = function useTableManager(props) {
   tableManager.rowEditApi = (0,_hooks___WEBPACK_IMPORTED_MODULE_5__.useRowEdit)(props, tableManager);
   tableManager.rowVirtualizer = (0,_hooks___WEBPACK_IMPORTED_MODULE_5__.useRowVirtualizer)(props, tableManager);
   tableManager.asyncApi = (0,_hooks___WEBPACK_IMPORTED_MODULE_5__.useAsync)(props, tableManager);
-  tableManager.isLoading = (_props$isLoading = props.isLoading) !== null && _props$isLoading !== void 0 ? _props$isLoading : tableManager.mode !== "sync" && tableManager.asyncApi.isLoading;
-  var searchText = tableManager.searchApi.searchText.length >= tableManager.config.minSearchChars ? tableManager.searchApi.searchText : ""; // reset page number
-
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (!tableManager.isInitialized) return;
-    if (tableManager.paginationApi.page === 1) return;
-    tableManager.paginationApi.setPage(1);
-  }, [searchText, tableManager.isInitialized, tableManager.paginationApi, tableManager.paginationApi.pageSize]); // reset rows
-
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (!tableManagerRef.current.isInitialized) return;
-
-    if (tableManager.mode !== "sync") {
-      tableManager.rowSelectionApi.setSelectedRowsIds([]);
-      tableManager.asyncApi.resetRows();
-    }
-  }, [searchText, tableManager.asyncApi, tableManager.mode, tableManager.rowSelectionApi, tableManager.sortApi.sort.colId, tableManager.sortApi.sort.isAsc]); // reset edit row
-
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (tableManager.rowEditApi.editRow) tableManager.rowEditApi.setEditRowId(null);
-  }, [searchText, tableManager.sortApi.sort.colId, tableManager.sortApi.sort.isAsc, tableManager.paginationApi.page, tableManager.rowEditApi]); // initialization completion
+  tableManager.isLoading = (_props$isLoading = props.isLoading) !== null && _props$isLoading !== void 0 ? _props$isLoading : tableManager.mode !== "sync" && tableManager.asyncApi.isLoading; // initialization completion
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     tableManager.isInitialized = true;
@@ -5897,12 +5935,6 @@ var GridTable = function GridTable(props) {
       gridTemplateRows: "repeat(".concat(pageRows.length + 1 + (isVirtualScroll ? 1 : 0) + (hasChildren ? 1 : 0), ", max-content)")
     });
   }, [additionalProps.style, hasChildren, isVirtualScroll, pageRows.length, visibleColumns]);
-  var measureRefs = react__WEBPACK_IMPORTED_MODULE_3__.useRef([]);
-  react__WEBPACK_IMPORTED_MODULE_3__.useEffect(function () {
-    virtualItems.map(function (virtualizedRow) {
-      measureRefs.current[virtualizedRow.index] = virtualizedRow.measureRef;
-    });
-  }, [virtualItems, visibleColumns]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement("div", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, rest, {
     ref: rgtRef,
     id: id,
@@ -5937,7 +5969,7 @@ var GridTable = function GridTable(props) {
       key: virtualizedRow.index,
       index: virtualizedRow.index,
       data: pageRows[virtualizedRow.index],
-      ref: measureRefs.current[virtualizedRow.index],
+      ref: virtualizedRow.measureRef,
       tableManager: tableManager
     });
   })), [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(_components___WEBPACK_IMPORTED_MODULE_5__.Row, {
@@ -6184,7 +6216,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ":root {\n    --rgt-background-color: rgb(255, 255, 255);\n    --rgt-shadow-color: rgb(0 0 0 / 0.25);\n    --rgt-border-color: #eee;\n    --rgt-button-color: #125082;\n    --rgt-color1: #fff;\n    --rgt-color2: #c5c5c5;\n    --rgt-color3: #9e9e9e;\n    --rgt-color4: yellow;\n    --rgt-color5: #f5f5f5;\n\n    --rgt-border: 1px solid var(--rgt-border-color);\n}\n\n/* general */\n\n.rgt-text-truncate {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.rgt-clickable {\n    cursor: pointer;\n}\n\n.rgt-disabled {\n    cursor: not-allowed;\n}\n\n.rgt-disabled-button {\n    background: var(--rgt-color2) !important;\n    cursor: not-allowed !important;\n}\n\n.rgt-flex-child {\n    flex: 1;\n}\n\n.rgt-wrapper * {\n    box-sizing: border-box;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-track {\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar {\n    width: 8px;\n    height: 8px;\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-thumb {\n    background-color: #ddd;\n    border: 2px solid #d8d8d8;\n}\n\n/* elements */\n\n.rgt-wrapper {\n    display: flex;\n    flex-direction: column;\n    position: relative;\n    width: 100%;\n    height: 100%;\n    min-height: 388px;\n    border: var(--rgt-border);\n}\n\n.rgt-container {\n    background: var(--rgt-background-color);\n    width: 100%;\n    position: relative;\n    /* height: 100%; */\n}\n\n.rgt-cell {\n    background: var(--rgt-background-color);\n    display: flex;\n    height: 100%;\n    align-items: center;\n    border-bottom: var(--rgt-border);\n    min-height: 48px;\n}\n\n.rgt-cell-inner {\n    margin: 0 20px;\n    display: block;\n    width: 100%;\n}\n\n.rgt-cell-header {\n    display: flex;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    width: 100%;\n    z-index: 1;\n    min-height: 48px;\n    max-height: 48px;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-cell-header-virtual-col {\n    border-bottom: var(--rgt-border);\n    background: var(--rgt-background-color);\n    z-index: 2;\n}\n\n.rgt-cell-header-inner {\n    padding: 0 20px;\n    display: flex;\n    flex: 1;\n    align-items: center;\n    position: relative;\n    width: 100%;\n    background: var(--rgt-background-color);\n    overflow: hidden;\n}\n\n.rgt-cell-header-inner-not-pinned-right {\n    border-right: var(--rgt-border);\n}\n\n.rgt-cell-header-inner-checkbox {\n    padding: 0px;\n    justify-content: center;\n}\n\n.rgt-placeholder-cell {\n    position: relative;\n    border-radius: 2px;\n    height: 20px;\n    width: 100%;\n    display: inline-block;\n    margin: 0 20px;\n    overflow: hidden;\n    background-color: #eee;\n}\n\n.rgt-placeholder-cell::after {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    transform: translateX(-100%);\n    background-image: linear-gradient(\n        90deg,\n        rgba(255, 255, 255, 0) 0,\n        rgba(255, 255, 255, 0.2) 20%,\n        rgba(255, 255, 255, 0.5) 60%,\n        rgba(255, 255, 255, 0)\n    );\n    animation: loading 1.5s infinite;\n}\n\n@keyframes loading {\n    100% {\n        transform: translateX(100%);\n    }\n}\n\n.rgt-resize-handle {\n    height: 100%;\n    width: 10px;\n    z-index: 1;\n    cursor: w-resize;\n    position: absolute;\n    top: 0;\n    right: 0;\n}\n\n.rgt-footer {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    box-sizing: border-box;\n    font-weight: 500;\n    background: var(--rgt-background-color);\n    z-index: 1;\n    border-top: var(--rgt-border);\n    overflow-x: auto;\n    overflow-y: hidden;\n}\n\n.rgt-footer-items-information {\n    padding: 12px 20px;\n    white-space: nowrap;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-footer-clear-selection-button {\n    display: inline-flex;\n    margin-left: 5px;\n}\n\n.rgt-footer-page-size {\n    display: flex;\n}\n\n.rgt-footer-page-size-select {\n    cursor: pointer;\n    margin-right: 20px;\n    margin-left: 10px;\n    border-radius: 4px;\n    border-color: var(--rgt-border-color);\n}\n\n.rgt-footer-page-input {\n    padding: 0px 0px 0px 5px;\n    outline: none;\n    flex: 1;\n    max-width: 52px;\n    line-height: 22px;\n    margin: 0 10px -2px;\n    border-radius: 4px;\n    border: var(--rgt-border);\n}\n\n.rgt-footer-right-container {\n    display: inline-flex;\n    align-items: center;\n    padding: 12px 20px;\n    white-space: nowrap;\n}\n\n.rgt-footer-pagination {\n    display: flex;\n}\n\n.rgt-footer-pagination-input-container {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin: 0px 10px 0 20px;\n}\n\n.rgt-footer-pagination-button {\n    background: var(--rgt-button-color);\n    color: var(--rgt-color1);\n    margin-left: 10px;\n    border: none;\n    border-radius: 4px;\n    padding: 0px 12px;\n    cursor: pointer;\n    display: block;\n    min-height: 24px;\n    max-height: 24px;\n    min-width: 60px;\n    outline: none;\n    position: relative;\n    box-shadow: 1px 1px 1px 0px var(--rgt-shadow-color);\n    font-size: 12px;\n}\n\n.rgt-cell-checkbox {\n    padding: 0 16px;\n    box-sizing: border-box;\n    justify-content: center;\n    background: var(--rgt-background-color);\n}\n\n.rgt-sort-icon {\n    font-size: 16px;\n    margin-left: 5px;\n    display: inline-flex;\n}\n\n.rgt-container-overlay {\n    position: absolute;\n    top: 99px;\n    left: 0;\n    right: 0;\n    bottom: 57px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 36px;\n    font-weight: 700;\n    color: var(--rgt-color3);\n    pointer-events: none;\n}\n\n.rgt-column-sort-ghost {\n    border-left: var(--rgt-border);\n    border-right: var(--rgt-border);\n    z-index: 2;\n}\n\n.rgt-header-container {\n    display: flex;\n    width: 100%;\n    background: var(--rgt-background-color);\n    align-items: center;\n    justify-content: space-between;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-search-highlight {\n    background: var(--rgt-color4);\n}\n\n.rgt-columns-manager-wrapper {\n    position: relative;\n    z-index: 3;\n    display: inline-flex;\n    padding: 10px;\n}\n\n.rgt-columns-manager-button {\n    cursor: pointer;\n    height: 26px;\n    width: 26px;\n    padding: 0;\n    background: transparent;\n    outline: none;\n    border-radius: 50%;\n    border: none;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: background 0.2s ease;\n}\n\n.rgt-columns-manager-button:hover,\n.rgt-columns-manager-button-active {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover {\n    display: inline-flex;\n    flex-direction: column;\n    transition: transform 0.1s ease-out;\n    transform-origin: top right;\n    transform: scale(0);\n    padding: 10px 0px;\n    position: absolute;\n    right: 50%;\n    top: 80%;\n    background: var(--rgt-background-color);\n    border-radius: 2px;\n    box-shadow: 1px 1px 4px 0px var(--rgt-shadow-color);\n    min-width: 200px;\n}\n\n.rgt-columns-manager-popover-open {\n    transform: scale(1);\n}\n\n.rgt-columns-manager-popover-row {\n    display: flex;\n    flex: 1;\n    justify-content: space-between;\n    position: relative;\n    font-size: 14px;\n    align-items: center;\n}\n\n.rgt-columns-manager-popover-title {\n    padding: 0 20px;\n    font-weight: 500;\n    margin-bottom: 10px;\n    white-space: nowrap;\n    font-size: 16px;\n}\n\n.rgt-columns-manager-popover-row > label {\n    padding: 5px 40px 5px 20px;\n    width: 100%;\n}\n\n.rgt-columns-manager-popover-row > input {\n    margin: 0;\n    position: absolute;\n    right: 20px;\n    pointer-events: none;\n}\n\n.rgt-columns-manager-popover-row:hover {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover-body {\n    display: inline-flex;\n    flex-direction: column;\n    max-height: 290px;\n    height: 100%;\n    width: 100%;\n    overflow: auto;\n    max-width: 300px;\n}\n\n.rgt-search-container {\n    width: 100%;\n    z-index: 1;\n    flex: 1;\n    display: inline-flex;\n    padding: 10px 10px 10px 20px;\n}\n\n.rgt-search-label {\n    line-height: 30px;\n    font-weight: 500;\n    font-size: 16px;\n    margin-right: 5px;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-search-icon {\n    font-size: 22px;\n    transform: rotate(-35deg);\n    display: inline-block;\n    margin-right: 5px;\n    color: var(--rgt-color2);\n}\n\n.rgt-search-input {\n    width: 100%;\n    line-height: 30px;\n    margin-right: 10px;\n    flex: 1;\n    border: none;\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n}\n\n.rgt-cell-editor-inner {\n    position: relative;\n    height: 30px;\n    width: 100%;\n}\n\n.rgt-cell-editor-input {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    width: 100%;\n    border: none;\n    border-bottom: var(--rgt-border);\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n    font-family: inherit;\n}\n\n.rgt-cell-header-sticky {\n    position: -webkit-sticky;\n    position: sticky;\n    top: 0;\n}\n\n.rgt-cell-header-not-sticky {\n    position: relative;\n}\n\n.rgt-cell-header-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 2;\n}\n\n.rgt-cell-header-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-header-pinned-right {\n    right: 0;\n}\n\n.rgt-cell-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 1;\n}\n\n.rgt-cell-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-pinned-right {\n    right: 0;\n}\n", "",{"version":3,"sources":["webpack://./src/index.css"],"names":[],"mappings":"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","sourcesContent":[":root {\n    --rgt-background-color: rgb(255, 255, 255);\n    --rgt-shadow-color: rgb(0 0 0 / 0.25);\n    --rgt-border-color: #eee;\n    --rgt-button-color: #125082;\n    --rgt-color1: #fff;\n    --rgt-color2: #c5c5c5;\n    --rgt-color3: #9e9e9e;\n    --rgt-color4: yellow;\n    --rgt-color5: #f5f5f5;\n\n    --rgt-border: 1px solid var(--rgt-border-color);\n}\n\n/* general */\n\n.rgt-text-truncate {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.rgt-clickable {\n    cursor: pointer;\n}\n\n.rgt-disabled {\n    cursor: not-allowed;\n}\n\n.rgt-disabled-button {\n    background: var(--rgt-color2) !important;\n    cursor: not-allowed !important;\n}\n\n.rgt-flex-child {\n    flex: 1;\n}\n\n.rgt-wrapper * {\n    box-sizing: border-box;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-track {\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar {\n    width: 8px;\n    height: 8px;\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-thumb {\n    background-color: #ddd;\n    border: 2px solid #d8d8d8;\n}\n\n/* elements */\n\n.rgt-wrapper {\n    display: flex;\n    flex-direction: column;\n    position: relative;\n    width: 100%;\n    height: 100%;\n    min-height: 388px;\n    border: var(--rgt-border);\n}\n\n.rgt-container {\n    background: var(--rgt-background-color);\n    width: 100%;\n    position: relative;\n    /* height: 100%; */\n}\n\n.rgt-cell {\n    background: var(--rgt-background-color);\n    display: flex;\n    height: 100%;\n    align-items: center;\n    border-bottom: var(--rgt-border);\n    min-height: 48px;\n}\n\n.rgt-cell-inner {\n    margin: 0 20px;\n    display: block;\n    width: 100%;\n}\n\n.rgt-cell-header {\n    display: flex;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    width: 100%;\n    z-index: 1;\n    min-height: 48px;\n    max-height: 48px;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-cell-header-virtual-col {\n    border-bottom: var(--rgt-border);\n    background: var(--rgt-background-color);\n    z-index: 2;\n}\n\n.rgt-cell-header-inner {\n    padding: 0 20px;\n    display: flex;\n    flex: 1;\n    align-items: center;\n    position: relative;\n    width: 100%;\n    background: var(--rgt-background-color);\n    overflow: hidden;\n}\n\n.rgt-cell-header-inner-not-pinned-right {\n    border-right: var(--rgt-border);\n}\n\n.rgt-cell-header-inner-checkbox {\n    padding: 0px;\n    justify-content: center;\n}\n\n.rgt-placeholder-cell {\n    position: relative;\n    border-radius: 2px;\n    height: 20px;\n    width: 100%;\n    display: inline-block;\n    margin: 0 20px;\n    overflow: hidden;\n    background-color: #eee;\n}\n\n.rgt-placeholder-cell::after {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    transform: translateX(-100%);\n    background-image: linear-gradient(\n        90deg,\n        rgba(255, 255, 255, 0) 0,\n        rgba(255, 255, 255, 0.2) 20%,\n        rgba(255, 255, 255, 0.5) 60%,\n        rgba(255, 255, 255, 0)\n    );\n    animation: loading 1.5s infinite;\n}\n\n@keyframes loading {\n    100% {\n        transform: translateX(100%);\n    }\n}\n\n.rgt-resize-handle {\n    height: 100%;\n    width: 10px;\n    z-index: 1;\n    cursor: w-resize;\n    position: absolute;\n    top: 0;\n    right: 0;\n}\n\n.rgt-footer {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    box-sizing: border-box;\n    font-weight: 500;\n    background: var(--rgt-background-color);\n    z-index: 1;\n    border-top: var(--rgt-border);\n    overflow-x: auto;\n    overflow-y: hidden;\n}\n\n.rgt-footer-items-information {\n    padding: 12px 20px;\n    white-space: nowrap;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-footer-clear-selection-button {\n    display: inline-flex;\n    margin-left: 5px;\n}\n\n.rgt-footer-page-size {\n    display: flex;\n}\n\n.rgt-footer-page-size-select {\n    cursor: pointer;\n    margin-right: 20px;\n    margin-left: 10px;\n    border-radius: 4px;\n    border-color: var(--rgt-border-color);\n}\n\n.rgt-footer-page-input {\n    padding: 0px 0px 0px 5px;\n    outline: none;\n    flex: 1;\n    max-width: 52px;\n    line-height: 22px;\n    margin: 0 10px -2px;\n    border-radius: 4px;\n    border: var(--rgt-border);\n}\n\n.rgt-footer-right-container {\n    display: inline-flex;\n    align-items: center;\n    padding: 12px 20px;\n    white-space: nowrap;\n}\n\n.rgt-footer-pagination {\n    display: flex;\n}\n\n.rgt-footer-pagination-input-container {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin: 0px 10px 0 20px;\n}\n\n.rgt-footer-pagination-button {\n    background: var(--rgt-button-color);\n    color: var(--rgt-color1);\n    margin-left: 10px;\n    border: none;\n    border-radius: 4px;\n    padding: 0px 12px;\n    cursor: pointer;\n    display: block;\n    min-height: 24px;\n    max-height: 24px;\n    min-width: 60px;\n    outline: none;\n    position: relative;\n    box-shadow: 1px 1px 1px 0px var(--rgt-shadow-color);\n    font-size: 12px;\n}\n\n.rgt-cell-checkbox {\n    padding: 0 16px;\n    box-sizing: border-box;\n    justify-content: center;\n    background: var(--rgt-background-color);\n}\n\n.rgt-sort-icon {\n    font-size: 16px;\n    margin-left: 5px;\n    display: inline-flex;\n}\n\n.rgt-container-overlay {\n    position: absolute;\n    top: 99px;\n    left: 0;\n    right: 0;\n    bottom: 57px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 36px;\n    font-weight: 700;\n    color: var(--rgt-color3);\n    pointer-events: none;\n}\n\n.rgt-column-sort-ghost {\n    border-left: var(--rgt-border);\n    border-right: var(--rgt-border);\n    z-index: 2;\n}\n\n.rgt-header-container {\n    display: flex;\n    width: 100%;\n    background: var(--rgt-background-color);\n    align-items: center;\n    justify-content: space-between;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-search-highlight {\n    background: var(--rgt-color4);\n}\n\n.rgt-columns-manager-wrapper {\n    position: relative;\n    z-index: 3;\n    display: inline-flex;\n    padding: 10px;\n}\n\n.rgt-columns-manager-button {\n    cursor: pointer;\n    height: 26px;\n    width: 26px;\n    padding: 0;\n    background: transparent;\n    outline: none;\n    border-radius: 50%;\n    border: none;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: background 0.2s ease;\n}\n\n.rgt-columns-manager-button:hover,\n.rgt-columns-manager-button-active {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover {\n    display: inline-flex;\n    flex-direction: column;\n    transition: transform 0.1s ease-out;\n    transform-origin: top right;\n    transform: scale(0);\n    padding: 10px 0px;\n    position: absolute;\n    right: 50%;\n    top: 80%;\n    background: var(--rgt-background-color);\n    border-radius: 2px;\n    box-shadow: 1px 1px 4px 0px var(--rgt-shadow-color);\n    min-width: 200px;\n}\n\n.rgt-columns-manager-popover-open {\n    transform: scale(1);\n}\n\n.rgt-columns-manager-popover-row {\n    display: flex;\n    flex: 1;\n    justify-content: space-between;\n    position: relative;\n    font-size: 14px;\n    align-items: center;\n}\n\n.rgt-columns-manager-popover-title {\n    padding: 0 20px;\n    font-weight: 500;\n    margin-bottom: 10px;\n    white-space: nowrap;\n    font-size: 16px;\n}\n\n.rgt-columns-manager-popover-row > label {\n    padding: 5px 40px 5px 20px;\n    width: 100%;\n}\n\n.rgt-columns-manager-popover-row > input {\n    margin: 0;\n    position: absolute;\n    right: 20px;\n    pointer-events: none;\n}\n\n.rgt-columns-manager-popover-row:hover {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover-body {\n    display: inline-flex;\n    flex-direction: column;\n    max-height: 290px;\n    height: 100%;\n    width: 100%;\n    overflow: auto;\n    max-width: 300px;\n}\n\n.rgt-search-container {\n    width: 100%;\n    z-index: 1;\n    flex: 1;\n    display: inline-flex;\n    padding: 10px 10px 10px 20px;\n}\n\n.rgt-search-label {\n    line-height: 30px;\n    font-weight: 500;\n    font-size: 16px;\n    margin-right: 5px;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-search-icon {\n    font-size: 22px;\n    transform: rotate(-35deg);\n    display: inline-block;\n    margin-right: 5px;\n    color: var(--rgt-color2);\n}\n\n.rgt-search-input {\n    width: 100%;\n    line-height: 30px;\n    margin-right: 10px;\n    flex: 1;\n    border: none;\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n}\n\n.rgt-cell-editor-inner {\n    position: relative;\n    height: 30px;\n    width: 100%;\n}\n\n.rgt-cell-editor-input {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    width: 100%;\n    border: none;\n    border-bottom: var(--rgt-border);\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n    font-family: inherit;\n}\n\n.rgt-cell-header-sticky {\n    position: -webkit-sticky;\n    position: sticky;\n    top: 0;\n}\n\n.rgt-cell-header-not-sticky {\n    position: relative;\n}\n\n.rgt-cell-header-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 2;\n}\n\n.rgt-cell-header-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-header-pinned-right {\n    right: 0;\n}\n\n.rgt-cell-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 1;\n}\n\n.rgt-cell-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-pinned-right {\n    right: 0;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ":root {\n    --rgt-background-color: rgb(255, 255, 255);\n    --rgt-shadow-color: rgb(0 0 0 / 0.25);\n    --rgt-border-color: #eee;\n    --rgt-button-color: #125082;\n    --rgt-color1: #fff;\n    --rgt-color2: #c5c5c5;\n    --rgt-color3: #9e9e9e;\n    --rgt-color4: yellow;\n    --rgt-color5: #f5f5f5;\n\n    --rgt-border: 1px solid var(--rgt-border-color);\n}\n\n/* general */\n\n.rgt-text-truncate {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.rgt-clickable {\n    cursor: pointer;\n}\n\n.rgt-disabled {\n    cursor: not-allowed;\n}\n\n.rgt-disabled-button {\n    background: var(--rgt-color2) !important;\n    cursor: not-allowed !important;\n}\n\n.rgt-flex-child {\n    flex: 1;\n}\n\n.rgt-wrapper * {\n    box-sizing: border-box;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-track {\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar {\n    width: 8px;\n    height: 8px;\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-thumb {\n    background-color: #ddd;\n    border: 2px solid #d8d8d8;\n}\n\n/* elements */\n\n.rgt-wrapper {\n    display: flex;\n    flex-direction: column;\n    position: relative;\n    width: 100%;\n    height: 100%;\n    min-height: 388px;\n    border: var(--rgt-border);\n}\n\n.rgt-container {\n    background: var(--rgt-background-color);\n    width: 100%;\n    position: relative;\n    /* height: 100%; */\n}\n\n.rgt-cell {\n    background: var(--rgt-background-color);\n    display: flex;\n    height: 100%;\n    align-items: center;\n    border-bottom: var(--rgt-border);\n    min-height: 48px;\n}\n\n.rgt-cell-inner {\n    margin: 0 20px;\n    display: block;\n    width: 100%;\n}\n\n.rgt-cell-header {\n    display: flex;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    width: 100%;\n    z-index: 1;\n    min-height: 48px;\n    max-height: 48px;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-cell-header-virtual-col {\n    border-bottom: var(--rgt-border);\n    background: var(--rgt-background-color);\n    z-index: 2;\n}\n\n.rgt-cell-header-inner {\n    padding: 0 20px;\n    display: flex;\n    flex: 1;\n    align-items: center;\n    position: relative;\n    width: 100%;\n    background: var(--rgt-background-color);\n    overflow: hidden;\n}\n\n.rgt-cell-header-inner-not-pinned-right {\n    border-right: var(--rgt-border);\n}\n\n.rgt-cell-header-inner-checkbox {\n    padding: 0px;\n    justify-content: center;\n}\n\n.rgt-placeholder-cell {\n    position: relative;\n    border-radius: 2px;\n    height: 20px;\n    width: 100%;\n    display: inline-block;\n    margin: 0 20px;\n    overflow: hidden;\n    background-color: #eee;\n}\n\n.rgt-placeholder-cell::after {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    transform: translateX(-100%);\n    background-image: linear-gradient(\n        90deg,\n        rgba(255, 255, 255, 0) 0,\n        rgba(255, 255, 255, 0.2) 20%,\n        rgba(255, 255, 255, 0.5) 60%,\n        rgba(255, 255, 255, 0)\n    );\n    animation: loading 1.5s infinite;\n}\n\n@keyframes loading {\n    100% {\n        transform: translateX(100%);\n    }\n}\n\n.rgt-resize-handle {\n    height: 100%;\n    width: 10px;\n    z-index: 1;\n    cursor: w-resize;\n    position: absolute;\n    top: 0;\n    right: 0;\n}\n\n.rgt-footer {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    box-sizing: border-box;\n    font-weight: 500;\n    background: var(--rgt-background-color);\n    z-index: 1;\n    border-top: var(--rgt-border);\n    overflow-x: auto;\n    overflow-y: hidden;\n}\n\n.rgt-footer-items-information {\n    padding: 12px 20px;\n    white-space: nowrap;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-footer-clear-selection-button {\n    display: inline-flex;\n    margin-left: 2px;\n    margin-top: -8px;\n}\n\n.rgt-footer-page-size {\n    display: flex;\n}\n\n.rgt-footer-page-size-select {\n    cursor: pointer;\n    margin-right: 20px;\n    margin-left: 10px;\n    border-radius: 4px;\n    border-color: var(--rgt-border-color);\n}\n\n.rgt-footer-page-input {\n    padding: 0px 0px 0px 5px;\n    outline: none;\n    flex: 1;\n    max-width: 52px;\n    line-height: 22px;\n    margin: 0 10px -2px;\n    border-radius: 4px;\n    border: var(--rgt-border);\n}\n\n.rgt-footer-right-container {\n    display: inline-flex;\n    align-items: center;\n    padding: 12px 20px;\n    white-space: nowrap;\n}\n\n.rgt-footer-pagination {\n    display: flex;\n}\n\n.rgt-footer-pagination-input-container {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin: 0px 10px 0 20px;\n}\n\n.rgt-footer-pagination-button {\n    background: var(--rgt-button-color);\n    color: var(--rgt-color1);\n    margin-left: 10px;\n    border: none;\n    border-radius: 4px;\n    padding: 0px 12px;\n    cursor: pointer;\n    display: block;\n    min-height: 24px;\n    max-height: 24px;\n    min-width: 60px;\n    outline: none;\n    position: relative;\n    box-shadow: 1px 1px 1px 0px var(--rgt-shadow-color);\n    font-size: 12px;\n}\n\n.rgt-cell-checkbox {\n    padding: 0 16px;\n    box-sizing: border-box;\n    justify-content: center;\n    background: var(--rgt-background-color);\n}\n\n.rgt-sort-icon {\n    font-size: 16px;\n    margin-left: 5px;\n    display: inline-flex;\n}\n\n.rgt-container-overlay {\n    position: absolute;\n    top: 99px;\n    left: 0;\n    right: 0;\n    bottom: 57px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 36px;\n    font-weight: 700;\n    color: var(--rgt-color3);\n    pointer-events: none;\n}\n\n.rgt-column-sort-ghost {\n    border-left: var(--rgt-border);\n    border-right: var(--rgt-border);\n    z-index: 2;\n}\n\n.rgt-header-container {\n    display: flex;\n    width: 100%;\n    background: var(--rgt-background-color);\n    align-items: center;\n    justify-content: space-between;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-search-highlight {\n    background: var(--rgt-color4);\n}\n\n.rgt-columns-manager-wrapper {\n    position: relative;\n    z-index: 3;\n    display: inline-flex;\n    padding: 10px;\n}\n\n.rgt-columns-manager-button {\n    cursor: pointer;\n    height: 26px;\n    width: 26px;\n    padding: 0;\n    background: transparent;\n    outline: none;\n    border-radius: 50%;\n    border: none;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: background 0.2s ease;\n}\n\n.rgt-columns-manager-button:hover,\n.rgt-columns-manager-button-active {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover {\n    display: inline-flex;\n    flex-direction: column;\n    transition: transform 0.1s ease-out;\n    transform-origin: top right;\n    transform: scale(0);\n    padding: 10px 0px;\n    position: absolute;\n    right: 50%;\n    top: 80%;\n    background: var(--rgt-background-color);\n    border-radius: 2px;\n    box-shadow: 1px 1px 4px 0px var(--rgt-shadow-color);\n    min-width: 200px;\n}\n\n.rgt-columns-manager-popover-open {\n    transform: scale(1);\n}\n\n.rgt-columns-manager-popover-row {\n    display: flex;\n    flex: 1;\n    justify-content: space-between;\n    position: relative;\n    font-size: 14px;\n    align-items: center;\n}\n\n.rgt-columns-manager-popover-title {\n    padding: 0 20px;\n    font-weight: 500;\n    margin-bottom: 10px;\n    white-space: nowrap;\n    font-size: 16px;\n}\n\n.rgt-columns-manager-popover-row > label {\n    padding: 5px 40px 5px 20px;\n    width: 100%;\n}\n\n.rgt-columns-manager-popover-row > input {\n    margin: 0;\n    position: absolute;\n    right: 20px;\n    pointer-events: none;\n}\n\n.rgt-columns-manager-popover-row:hover {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover-body {\n    display: inline-flex;\n    flex-direction: column;\n    max-height: 290px;\n    height: 100%;\n    width: 100%;\n    overflow: auto;\n    max-width: 300px;\n}\n\n.rgt-search-container {\n    width: 100%;\n    z-index: 1;\n    flex: 1;\n    display: inline-flex;\n    padding: 10px 10px 10px 20px;\n}\n\n.rgt-search-label {\n    line-height: 30px;\n    font-weight: 500;\n    font-size: 16px;\n    margin-right: 5px;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-search-icon {\n    font-size: 22px;\n    transform: rotate(-35deg);\n    display: inline-block;\n    margin-right: 5px;\n    color: var(--rgt-color2);\n}\n\n.rgt-search-input {\n    width: 100%;\n    line-height: 30px;\n    margin-right: 10px;\n    flex: 1;\n    border: none;\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n}\n\n.rgt-cell-editor-inner {\n    position: relative;\n    height: 30px;\n    width: 100%;\n}\n\n.rgt-cell-editor-input {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    width: 100%;\n    border: none;\n    border-bottom: var(--rgt-border);\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n    font-family: inherit;\n}\n\n.rgt-cell-header-sticky {\n    position: -webkit-sticky;\n    position: sticky;\n    top: 0;\n}\n\n.rgt-cell-header-not-sticky {\n    position: relative;\n}\n\n.rgt-cell-header-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 2;\n}\n\n.rgt-cell-header-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-header-pinned-right {\n    right: 0;\n}\n\n.rgt-cell-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 1;\n}\n\n.rgt-cell-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-pinned-right {\n    right: 0;\n}\n", "",{"version":3,"sources":["webpack://./src/index.css"],"names":[],"mappings":"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","sourcesContent":[":root {\n    --rgt-background-color: rgb(255, 255, 255);\n    --rgt-shadow-color: rgb(0 0 0 / 0.25);\n    --rgt-border-color: #eee;\n    --rgt-button-color: #125082;\n    --rgt-color1: #fff;\n    --rgt-color2: #c5c5c5;\n    --rgt-color3: #9e9e9e;\n    --rgt-color4: yellow;\n    --rgt-color5: #f5f5f5;\n\n    --rgt-border: 1px solid var(--rgt-border-color);\n}\n\n/* general */\n\n.rgt-text-truncate {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.rgt-clickable {\n    cursor: pointer;\n}\n\n.rgt-disabled {\n    cursor: not-allowed;\n}\n\n.rgt-disabled-button {\n    background: var(--rgt-color2) !important;\n    cursor: not-allowed !important;\n}\n\n.rgt-flex-child {\n    flex: 1;\n}\n\n.rgt-wrapper * {\n    box-sizing: border-box;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-track {\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar {\n    width: 8px;\n    height: 8px;\n    background-color: #f5f5f5;\n}\n\n.rgt-wrapper ::-webkit-scrollbar-thumb {\n    background-color: #ddd;\n    border: 2px solid #d8d8d8;\n}\n\n/* elements */\n\n.rgt-wrapper {\n    display: flex;\n    flex-direction: column;\n    position: relative;\n    width: 100%;\n    height: 100%;\n    min-height: 388px;\n    border: var(--rgt-border);\n}\n\n.rgt-container {\n    background: var(--rgt-background-color);\n    width: 100%;\n    position: relative;\n    /* height: 100%; */\n}\n\n.rgt-cell {\n    background: var(--rgt-background-color);\n    display: flex;\n    height: 100%;\n    align-items: center;\n    border-bottom: var(--rgt-border);\n    min-height: 48px;\n}\n\n.rgt-cell-inner {\n    margin: 0 20px;\n    display: block;\n    width: 100%;\n}\n\n.rgt-cell-header {\n    display: flex;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    width: 100%;\n    z-index: 1;\n    min-height: 48px;\n    max-height: 48px;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-cell-header-virtual-col {\n    border-bottom: var(--rgt-border);\n    background: var(--rgt-background-color);\n    z-index: 2;\n}\n\n.rgt-cell-header-inner {\n    padding: 0 20px;\n    display: flex;\n    flex: 1;\n    align-items: center;\n    position: relative;\n    width: 100%;\n    background: var(--rgt-background-color);\n    overflow: hidden;\n}\n\n.rgt-cell-header-inner-not-pinned-right {\n    border-right: var(--rgt-border);\n}\n\n.rgt-cell-header-inner-checkbox {\n    padding: 0px;\n    justify-content: center;\n}\n\n.rgt-placeholder-cell {\n    position: relative;\n    border-radius: 2px;\n    height: 20px;\n    width: 100%;\n    display: inline-block;\n    margin: 0 20px;\n    overflow: hidden;\n    background-color: #eee;\n}\n\n.rgt-placeholder-cell::after {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    transform: translateX(-100%);\n    background-image: linear-gradient(\n        90deg,\n        rgba(255, 255, 255, 0) 0,\n        rgba(255, 255, 255, 0.2) 20%,\n        rgba(255, 255, 255, 0.5) 60%,\n        rgba(255, 255, 255, 0)\n    );\n    animation: loading 1.5s infinite;\n}\n\n@keyframes loading {\n    100% {\n        transform: translateX(100%);\n    }\n}\n\n.rgt-resize-handle {\n    height: 100%;\n    width: 10px;\n    z-index: 1;\n    cursor: w-resize;\n    position: absolute;\n    top: 0;\n    right: 0;\n}\n\n.rgt-footer {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    box-sizing: border-box;\n    font-weight: 500;\n    background: var(--rgt-background-color);\n    z-index: 1;\n    border-top: var(--rgt-border);\n    overflow-x: auto;\n    overflow-y: hidden;\n}\n\n.rgt-footer-items-information {\n    padding: 12px 20px;\n    white-space: nowrap;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-footer-clear-selection-button {\n    display: inline-flex;\n    margin-left: 2px;\n    margin-top: -8px;\n}\n\n.rgt-footer-page-size {\n    display: flex;\n}\n\n.rgt-footer-page-size-select {\n    cursor: pointer;\n    margin-right: 20px;\n    margin-left: 10px;\n    border-radius: 4px;\n    border-color: var(--rgt-border-color);\n}\n\n.rgt-footer-page-input {\n    padding: 0px 0px 0px 5px;\n    outline: none;\n    flex: 1;\n    max-width: 52px;\n    line-height: 22px;\n    margin: 0 10px -2px;\n    border-radius: 4px;\n    border: var(--rgt-border);\n}\n\n.rgt-footer-right-container {\n    display: inline-flex;\n    align-items: center;\n    padding: 12px 20px;\n    white-space: nowrap;\n}\n\n.rgt-footer-pagination {\n    display: flex;\n}\n\n.rgt-footer-pagination-input-container {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin: 0px 10px 0 20px;\n}\n\n.rgt-footer-pagination-button {\n    background: var(--rgt-button-color);\n    color: var(--rgt-color1);\n    margin-left: 10px;\n    border: none;\n    border-radius: 4px;\n    padding: 0px 12px;\n    cursor: pointer;\n    display: block;\n    min-height: 24px;\n    max-height: 24px;\n    min-width: 60px;\n    outline: none;\n    position: relative;\n    box-shadow: 1px 1px 1px 0px var(--rgt-shadow-color);\n    font-size: 12px;\n}\n\n.rgt-cell-checkbox {\n    padding: 0 16px;\n    box-sizing: border-box;\n    justify-content: center;\n    background: var(--rgt-background-color);\n}\n\n.rgt-sort-icon {\n    font-size: 16px;\n    margin-left: 5px;\n    display: inline-flex;\n}\n\n.rgt-container-overlay {\n    position: absolute;\n    top: 99px;\n    left: 0;\n    right: 0;\n    bottom: 57px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 36px;\n    font-weight: 700;\n    color: var(--rgt-color3);\n    pointer-events: none;\n}\n\n.rgt-column-sort-ghost {\n    border-left: var(--rgt-border);\n    border-right: var(--rgt-border);\n    z-index: 2;\n}\n\n.rgt-header-container {\n    display: flex;\n    width: 100%;\n    background: var(--rgt-background-color);\n    align-items: center;\n    justify-content: space-between;\n    border-bottom: var(--rgt-border);\n}\n\n.rgt-search-highlight {\n    background: var(--rgt-color4);\n}\n\n.rgt-columns-manager-wrapper {\n    position: relative;\n    z-index: 3;\n    display: inline-flex;\n    padding: 10px;\n}\n\n.rgt-columns-manager-button {\n    cursor: pointer;\n    height: 26px;\n    width: 26px;\n    padding: 0;\n    background: transparent;\n    outline: none;\n    border-radius: 50%;\n    border: none;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: background 0.2s ease;\n}\n\n.rgt-columns-manager-button:hover,\n.rgt-columns-manager-button-active {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover {\n    display: inline-flex;\n    flex-direction: column;\n    transition: transform 0.1s ease-out;\n    transform-origin: top right;\n    transform: scale(0);\n    padding: 10px 0px;\n    position: absolute;\n    right: 50%;\n    top: 80%;\n    background: var(--rgt-background-color);\n    border-radius: 2px;\n    box-shadow: 1px 1px 4px 0px var(--rgt-shadow-color);\n    min-width: 200px;\n}\n\n.rgt-columns-manager-popover-open {\n    transform: scale(1);\n}\n\n.rgt-columns-manager-popover-row {\n    display: flex;\n    flex: 1;\n    justify-content: space-between;\n    position: relative;\n    font-size: 14px;\n    align-items: center;\n}\n\n.rgt-columns-manager-popover-title {\n    padding: 0 20px;\n    font-weight: 500;\n    margin-bottom: 10px;\n    white-space: nowrap;\n    font-size: 16px;\n}\n\n.rgt-columns-manager-popover-row > label {\n    padding: 5px 40px 5px 20px;\n    width: 100%;\n}\n\n.rgt-columns-manager-popover-row > input {\n    margin: 0;\n    position: absolute;\n    right: 20px;\n    pointer-events: none;\n}\n\n.rgt-columns-manager-popover-row:hover {\n    background: var(--rgt-color5);\n}\n\n.rgt-columns-manager-popover-body {\n    display: inline-flex;\n    flex-direction: column;\n    max-height: 290px;\n    height: 100%;\n    width: 100%;\n    overflow: auto;\n    max-width: 300px;\n}\n\n.rgt-search-container {\n    width: 100%;\n    z-index: 1;\n    flex: 1;\n    display: inline-flex;\n    padding: 10px 10px 10px 20px;\n}\n\n.rgt-search-label {\n    line-height: 30px;\n    font-weight: 500;\n    font-size: 16px;\n    margin-right: 5px;\n    display: inline-flex;\n    align-items: center;\n}\n\n.rgt-search-icon {\n    font-size: 22px;\n    transform: rotate(-35deg);\n    display: inline-block;\n    margin-right: 5px;\n    color: var(--rgt-color2);\n}\n\n.rgt-search-input {\n    width: 100%;\n    line-height: 30px;\n    margin-right: 10px;\n    flex: 1;\n    border: none;\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n}\n\n.rgt-cell-editor-inner {\n    position: relative;\n    height: 30px;\n    width: 100%;\n}\n\n.rgt-cell-editor-input {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    width: 100%;\n    border: none;\n    border-bottom: var(--rgt-border);\n    outline: none;\n    font-size: 16px;\n    padding: 0;\n    font-family: inherit;\n}\n\n.rgt-cell-header-sticky {\n    position: -webkit-sticky;\n    position: sticky;\n    top: 0;\n}\n\n.rgt-cell-header-not-sticky {\n    position: relative;\n}\n\n.rgt-cell-header-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 2;\n}\n\n.rgt-cell-header-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-header-pinned-right {\n    right: 0;\n}\n\n.rgt-cell-pinned {\n    position: -webkit-sticky;\n    position: sticky;\n    z-index: 1;\n}\n\n.rgt-cell-pinned-left {\n    left: 0;\n}\n\n.rgt-cell-pinned-right {\n    right: 0;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
