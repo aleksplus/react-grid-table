@@ -87,9 +87,18 @@ const useAsync = (props, tableManager) => {
 
     const onRowsRequest = async (rowsRequest) => {
         rowsRequests.current = [...rowsRequests.current, rowsRequest];
-        asyncApi.lastRowsRequestId = rowsRequest.id;
 
         const result = await props.onRowsRequest(rowsRequest, tableManager);
+        // if bad result, clear downloaded information
+        if (!result?.rows) {
+            rowsRequests.current = rowsRequests.current.filter(
+                (range) =>
+                    range.to !== rowsRequest.to &&
+                    range.from !== rowsRequest.from
+            );
+            return;
+        }
+        asyncApi.lastRowsRequestId = rowsRequest.id;
 
         if (
             !rowsRequests.current.find(
