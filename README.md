@@ -1,4 +1,4 @@
-Fork @nadavshaar/react-grid-table
+[UNMAINTAINED] Fork @nadavshaar/react-grid-table
 
 # react-grid-table
 
